@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Layout, Menu, Breadcrumb, Row, Col, Select, InputNumber, Upload, message, Button } from 'antd';
+import { Layout, Menu, Breadcrumb, Row, Col, Select, InputNumber, Upload, message, Button, Radio } from 'antd';
 import 'antd/dist/antd.css';
 import Navbar from '../page/Navbar'
 import { UploadOutlined } from '@ant-design/icons';
@@ -8,8 +8,6 @@ import firebase from '../firebase'
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Option } = Select;
 const { Header, Content, Footer } = Layout;
-
-
 function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -17,18 +15,21 @@ function getBase64(img, callback) {
 }
 
 const A4 = props => {
-
-    const [count, setCount] = useState(0)
+    // const [count, setCount] = useState(0)
     const [size, setSize] = useState(0)
-    const [weight, setWeight] = useState(0)
-    const [quantity, setQuantity] = useState(0)
+    const [weight, setWeight] = useState(0) // paper
+    const [quantity, setQuantity] = useState(1)
+    const [color, setColor] = useState("color")
+    const [url, setUrl] = useState(null)
+    //img
     const [image, setImage] = useState(null)
     const [status, setStatus] = useState("รอการตรวจสอบ")
     const [loading, setLoading] = useState(false)
     const [imageUrl, setImageUrl] = useState(null)
     const [progress, setProgress] = useState(0)
     const [statusUpload, setStatusUpload] = useState('')
-    const [url, setUrl] = useState(null)
+
+
 
 
     function handleChangeSize(value) {
@@ -46,27 +47,22 @@ const A4 = props => {
     }
     const img = {
         name: 'file',
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
         headers: {
             authorization: 'authorization-text',
         },
         onChange(e) {
             console.log(e.file, e.fileList);
-            const image = e.fileList.originFileObj;
+            const image = e.file.originFileObj;
             setImage(image)
-            if (e.file.status === 'uploading') {
-                setLoading(true)
-                return;
-            }
-            if (e.file.status === 'done') {
-                // Get this url from response in real world.
-                getBase64(e.file.originFileObj, imageUrl =>
-                    setImageUrl(imageUrl),
-                    setLoading(true)
-                );
-            }
-        },
+        }
     };
+    function handleChangeColor(value) {
+        setColor(value)
+        console.log(`selected ${value}`);
+
+    }
+
+    // อย่าลืม check ถ้ามันไม่ส่งค่าอะไรมาเลย 
     function handleSubmit(e) {
         e.preventDefault();
         console.log('Received values of form: ', e);
@@ -86,24 +82,28 @@ const A4 = props => {
                 (error) => {
                     console.log('error', error);
                 },
-                () => {
+                async () => {
                     // complete function ....
-                    storage.ref('images').child(image.name).getDownloadURL().then(url2 => {
-                        console.log("url", url2);
-                        setStatusUpload('')
-                        setUrl(url2)
+                    const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
 
-                    })
+                    const payload = { size, weight, quantity, color, urlfile }
+                    fetch('http://localhost:9000/testAPI', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
                 });
         }
-
-    } 
+    }
 
 
     return (
         <div>
             <Navbar />
-
             <h1 style={{ textAlign: 'center', marginTop: 150 }}>A4 Printing Calculator</h1>
             <Row>
                 <Col style={{ marginLeft: 'auto', marginRight: 'auto' }}>
@@ -134,12 +134,23 @@ const A4 = props => {
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
                                 {/* {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton} */}
                             </Upload>
-                            <button onClick={() => handleSubmit}>calculate</button>
+
                         </Col>
 
-
+                    </Row>
+                    <Row>
+                        <Col>
+                            <div>Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
+                        <Col>
+                            <Radio.Group defaultValue="color" size="large" onChange={handleChangeColor}>
+                                <Radio.Button value="black">Black</Radio.Button>
+                                <Radio.Button value="color">Color</Radio.Button>
+                            </Radio.Group>
+                        </Col>
 
                     </Row>
+                    <Row> <Col><button onClick={handleSubmit}>calculate</button></Col>  </Row>
+
 
                 </Col>
             </Row>
