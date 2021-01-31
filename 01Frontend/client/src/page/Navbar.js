@@ -7,7 +7,7 @@ const Homepage = props => {
     const { Header, Content, Footer } = Layout;
 
     return (
-        <div>
+        
             <Layout >
             <Header   style={{ position: 'fixed', zIndex: 0, width: '100%' ,backgroundColor:  '#ffffff' }}>
                 <div className="logo" />
@@ -17,7 +17,7 @@ const Homepage = props => {
 
                 </Menu>
             </Header>
-        </Layout></div>
+        </Layout>
     )
 }
 export default Homepage
