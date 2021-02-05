@@ -19,7 +19,7 @@ const A4 = props => {
     const [size, setSize] = useState(0)
     const [weight, setWeight] = useState(0) // paper
     const [quantity, setQuantity] = useState(1)
-    const [color, setColor] = useState("color")
+    const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
     //img
     const [image, setImage] = useState(null)
@@ -83,7 +83,7 @@ const A4 = props => {
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
 
                     const payload = { size, weight, quantity, color, urlfile }
-                    fetch('http://localhost:9000/testAPI', {
+                    fetch('http://localhost:9000/calA4', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -142,6 +142,12 @@ const A4 = props => {
                                 <Radio.Button value="color">Color</Radio.Button>
                             </Radio.Group>
                         </Col>
+                        {/* <Col>
+                            <Select size={'large'} style={{ width: 200 }} onChange={handleChangeColor} placeholder="Paper weight:">
+                                <Option value="0">black</Option>
+                                <Option value="1">color</Option>
+                              
+                            </Select></Col> */}
 
                     </Row>
                     <Row> <Col><Button onClick={handleSubmit}>calculate</Button></Col>  </Row>
