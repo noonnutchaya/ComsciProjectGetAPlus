@@ -10,14 +10,17 @@ import Card from './type/Card'
 import Envelope from './type/Envelope'
 import Flayer from './type/Flayer'
 import FourPages from './type/FourPages'
+import Order from './Order/Order'
 
 
 function App() {
   return (
   
+      // <div> <Order/></div>
     <Router>
     <Switch>
-    
+      {/* <Route exact path='/' component={Order} />
+      <Route path='/welcome' component={Welcome}/> */}
       <Route exact path='/' component={HomePage} />
       <Route path='/welcome' component={Welcome}/>
       <Route path='/a4' component={A4}/>
