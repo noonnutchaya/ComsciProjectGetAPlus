@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import 'antd/dist/antd.css';
 import NavbarHead from '../page/NavbarHead'
-const Card = props => {
+const Finish = props => {
     const { Header, Content, Footer } = Layout;
 
-        
     return (
         <div>
             <Layout >
@@ -13,4 +12,4 @@ const Card = props => {
         </Layout></div>
     )
 }
-export default Card
+export default Finish

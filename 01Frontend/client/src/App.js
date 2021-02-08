@@ -11,6 +11,7 @@ import Envelope from './type/Envelope'
 import Flayer from './type/Flayer'
 import FourPages from './type/FourPages'
 import Order from './Order/Order'
+import Finish from './Finish/Finish'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
       <Route path='/envelope' component={Envelope}/>
       <Route path='/flayer' component={Flayer}/>
       <Route path='/4pages' component={FourPages}/>
+      <Route path='/Finish' component={Finish}/>
      </Switch>
   </Router>
   );
