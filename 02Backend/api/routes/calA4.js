@@ -126,7 +126,7 @@ router.post("/", async function(req, res, next) {
 
   console.log("totalPrice: " + realPrice);
   console.log("-----------------------------------");
-  // res.send(realPrice.toString());
+  res.send(realPrice.toString());
 });
 
 module.exports = router;
