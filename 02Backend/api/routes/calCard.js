@@ -11,7 +11,7 @@ router.post("/", async function(req, res, next) {
   let [white, lightTone, darkTone] = [0, 0, 0];
   let [percentWhite, percentLightTone, percentDarkTone] = [0, 0, 0];
 
-  console.log("--- A4 ---");
+  console.log("--- CARD ---");
   console.log(
     "req -> " +
       "color: " +
@@ -109,16 +109,13 @@ router.post("/", async function(req, res, next) {
 
   console.log("check: " + realPrice);
 
-  if (weight >= 110 && weight <= 130) {
+  if (weight == 120) {
     console.log("+1");
     realPrice = realPrice + allPage; // 1 baht. per sheet
-  } else if (weight == 150) {
+  } else if (weight == 150 || weight == 180) {
     console.log("+3");
     realPrice = realPrice + allPage * 3; // 3 baht. per sheet
-  } else if (weight < 110) {
-    console.log("+0");
-    realPrice = realPrice;
-  }
+  } 
 
   console.log("check 2: " + realPrice);
   console.log("check 3 quantity: " + quantity);
@@ -126,7 +123,7 @@ router.post("/", async function(req, res, next) {
 
   console.log("totalPrice: " + realPrice);
   console.log("-----------------------------------");
-  // res.send(realPrice.toString());
+  res.send(realPrice.toString());
 });
 
 module.exports = router;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Layout, Menu, Breadcrumb, Row, Col, Select, InputNumber, Upload, message, Button, Radio } from 'antd';
 import 'antd/dist/antd.css';
-import Navbar from '../page/Navbar'
+import NavbarHead from '../page/NavbarHead'
 import { UploadOutlined } from '@ant-design/icons';
 import { storage } from '../firebase';
 import firebase from '../firebase'
@@ -28,9 +28,6 @@ const A4 = props => {
     const [imageUrl, setImageUrl] = useState(null)
     const [progress, setProgress] = useState(0)
     const [statusUpload, setStatusUpload] = useState('')
-
-
-
 
     function handleChangeSize(value) {
         setSize(value)
@@ -84,9 +81,8 @@ const A4 = props => {
                 async () => {
                     // complete function ....
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
-
                     const payload = { size, weight, quantity, color, urlfile }
-                    fetch('http://localhost:9000/calA4', {
+                    const res = await fetch('http://localhost:9000/calA4', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -94,7 +90,8 @@ const A4 = props => {
                         },
                         body: JSON.stringify(payload)
                     });
-
+                   const json = await res.json()
+                   console.log(json)
                 });
         }
     }
@@ -102,8 +99,8 @@ const A4 = props => {
 
     return (
         <div>
-            <Navbar />
-            <h1 style={{ textAlign: 'center', marginTop: 150 }}>A4 Printing Calculator</h1>
+            <NavbarHead />
+            <h1 style={{ textAlign: 'center' }}>A4 Printing Calculator</h1>
             <Row>
                 <Col style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                     <Row>
@@ -129,7 +126,7 @@ const A4 = props => {
                             <InputNumber size="large" min={1} max={1000} defaultValue={1} onChange={handleChangeQuantity} /></Col>
                         <Col><div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Upload {...img}>
+                            <Upload {...img} maxCount={1}>
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
                                 {/* {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton} */}
                             </Upload>
@@ -154,7 +151,7 @@ const A4 = props => {
                             </Select></Col> */}
 
                     </Row>
-                    <Row> <Col><button onClick={handleSubmit}>calculate</button></Col>  </Row>
+                    <Row> <Col><Button onClick={handleSubmit}>calculate</Button></Col>  </Row>
 
 
                 </Col>

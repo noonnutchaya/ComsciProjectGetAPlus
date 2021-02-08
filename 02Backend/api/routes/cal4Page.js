@@ -11,7 +11,7 @@ router.post("/", async function(req, res, next) {
   let [white, lightTone, darkTone] = [0, 0, 0];
   let [percentWhite, percentLightTone, percentDarkTone] = [0, 0, 0];
 
-  console.log("--- A4 ---");
+  console.log("--- 4 Page ---");
   console.log(
     "req -> " +
       "color: " +
