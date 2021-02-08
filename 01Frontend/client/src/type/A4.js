@@ -81,9 +81,8 @@ const A4 = props => {
                 async () => {
                     // complete function ....
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
-
                     const payload = { size, weight, quantity, color, urlfile }
-                    fetch('http://localhost:9000/calA4', {
+                    const res = await fetch('http://localhost:9000/calA4', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -91,6 +90,8 @@ const A4 = props => {
                         },
                         body: JSON.stringify(payload)
                     });
+                   const json = await res.json()
+                   console.log(json)
                 });
         }
     }
@@ -99,7 +100,7 @@ const A4 = props => {
     return (
         <div>
             <NavbarHead />
-            <h1 style={{ textAlign: 'center'}}>A4 Printing Calculator</h1>
+            <h1 style={{ textAlign: 'center' }}>A4 Printing Calculator</h1>
             <Row>
                 <Col style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                     <Row>
