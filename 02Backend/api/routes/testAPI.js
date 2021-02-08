@@ -103,27 +103,4 @@ router.get("/t", async function(req, res, next) {
 
 });
 
-// (async function () {
-//     const image = await Jimp.read("./images/1.png") ;
-//     console.log("hihi")
-
-//     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK) ;
-//     image.print(font, 1, 1, 'Hello world!');
-
-//     image.write("./images/1-edit.png");
-
-// } )();
-
-// router.get("/t", function(req, res) {
-//   Jimp.read("./routes/images/1.png", function(err, lenna) {
-//     lenna
-//       .resize(64, 64)
-//       .quality(60)
-//       .getBuffer(Jimp.MIME_JPEG, function(err, buffer) {
-//         res.set("Content-Type", Jimp.MIME_JPEG);
-//         res.send(buffer);
-//       });
-//   });
-// });
-
-module.exports = router;
+module.exports = router ;

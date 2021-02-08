@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Layout, Menu, Breadcrumb, Row, Col, Select, InputNumber, Upload, message, Button, Radio } from 'antd';
 import 'antd/dist/antd.css';
 import NavbarHead from '../page/NavbarHead'
+import '../type/CSS/setComponent.css';
+import btn from '../img/btn.png';
 import { UploadOutlined } from '@ant-design/icons';
 import { storage } from '../firebase';
 import firebase from '../firebase'
@@ -33,7 +35,6 @@ const A4 = props => {
         setSize(value)
         console.log(`selected ${value}`);
     }
-
     function handleChangeWeight(value) {
         setWeight(value)
         console.log(`selected ${value}`);
@@ -48,7 +49,7 @@ const A4 = props => {
             authorization: 'authorization-text',
         },
         onChange(e) {
-            console.log(e.file, e.fileList);
+            // console.log(e.file, e.fileList);
             const image = e.file.originFileObj;
             setImage(image)
         }
@@ -100,31 +101,32 @@ const A4 = props => {
     return (
         <div>
             <NavbarHead />
-            <h1 style={{ textAlign: 'center' }}>A4 Printing Calculator</h1>
+            <h1 id ="setCenterTitle">A4 PRINTING CALCULATOR</h1>
             <Row>
-                <Col style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <Col id = "setCenterAllComponent">
                     <Row>
-                        <Col><div>SIZE: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 200 }} onChange={handleChangeSize} placeholder="SIZE">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE">
                                 <Option value="a4">A4</Option>
                             </Select></Col>
-                        <Col><div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 200 }} onChange={handleChangeWeight} placeholder="Paper weight:">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight} placeholder="Paper weight:">
                                 <Option value="70">70 GSM</Option>
                                 <Option value="80">80 GSM</Option>
+                                <Option value="110">110 GSM</Option>
                                 <Option value="120">120 GSM</Option>
+                                <Option value="130">130 GSM</Option>
                                 <Option value="150">150 GSM</Option>
-                                <Option value="180">180 GSM</Option>
                             </Select></Col>
                     </Row>
-                    <Row style={{ marginTop: 35 }}>
+                    <Row id ="setSpaceTopComponent">
                         <Col>
-                            <div>Required Quantity : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                            <div id = "setTextTopic">Required Quantity : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <InputNumber size="large" min={1} max={1000} defaultValue={1} onChange={handleChangeQuantity} /></Col>
-                        <Col><div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                            <InputNumber size="large" style={{ width: 180 }} min={1} max={1000} defaultValue={1} onChange={handleChangeQuantity} /></Col>
+                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Upload {...img} maxCount={1}>
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
@@ -134,9 +136,9 @@ const A4 = props => {
                         </Col>
 
                     </Row>
-                    <Row>
+                    <Row id ="setSpaceTopComponent">
                         <Col>
-                            <div>Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
+                            <div id = "setTextTopic">Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
                         <Col>
                             <Radio.Group defaultValue="color" size="large" onChange={handleChangeColor}>
                                 <Radio.Button value="black">Black</Radio.Button>
@@ -151,9 +153,9 @@ const A4 = props => {
                             </Select></Col> */}
 
                     </Row>
-                    <Row> <Col><Button onClick={handleSubmit}>calculate</Button></Col>  </Row>
 
-
+                    <Row><Col><button onClick={handleSubmit} id = "setEffectButton"> CALCULATE </button></Col></Row>
+                    
                 </Col>
             </Row>
 
