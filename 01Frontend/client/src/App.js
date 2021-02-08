@@ -10,14 +10,18 @@ import Card from './type/Card'
 import Envelope from './type/Envelope'
 import Flayer from './type/Flayer'
 import FourPages from './type/FourPages'
+import Order from './Order/Order'
+import Finish from './Finish/Finish'
 
 
 function App() {
   return (
   
+      // <div> <Order/></div>
     <Router>
     <Switch>
-    
+      {/* <Route exact path='/' component={Order} />
+      <Route path='/welcome' component={Welcome}/> */}
       <Route exact path='/' component={HomePage} />
       <Route path='/welcome' component={Welcome}/>
       <Route path='/a4' component={A4}/>
@@ -26,6 +30,7 @@ function App() {
       <Route path='/envelope' component={Envelope}/>
       <Route path='/flayer' component={Flayer}/>
       <Route path='/4pages' component={FourPages}/>
+      <Route path='/Finish' component={Finish}/>
      </Switch>
   </Router>
   );
