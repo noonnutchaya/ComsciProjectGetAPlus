@@ -20,7 +20,7 @@ function getBase64(img, callback) {
 
 const A4 = props => {
     // const [count, setCount] = useState(0)
-    const [size, setSize] = useState(0)
+    const [size, setSize] = useState('A4')
     const [weight, setWeight] = useState(0) // paper
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
@@ -80,9 +80,7 @@ const A4 = props => {
         setIsDrawerVisible(false)
     }
     function onSubmitDrawer(){
-        console.log(name);
-        console.log(phone);
-        console.log(description);
+        const date = firebase.firestore.Timestamp.fromDate(new Date());
         db.collection('Order').add({
             Name: name,
             Phone:phone,
@@ -92,7 +90,8 @@ const A4 = props => {
             Weight: weight,
             Quantity: quantity,
             Color: color,
-            Url: imageUrl
+            Url: imageUrl,
+            OrderDate: date
         }) 
         .then(docRef => {
             console.log("add success~") 
@@ -117,15 +116,18 @@ const A4 = props => {
         console.log('Received values of form: ', e);
         console.log("image", image);
         if (image == null) {
-            message.error("กรุณาอัพโหลดสลิป")
-        } else {
+            message.error("กรุณาอัพโหลดไฟล์")
+        } 
+        if (weight == 0) {
+            message.error("กรุณาเลือก paper weight")
+        }else {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             uploadTask.on('state_changed',
                 async (snapshot) => {
                     const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
                     console.log("progress", progress);
                     if (progress !== 100) {
-                        setStatusUpload('กรุณารอการอัพโหลดรูป')
+                        setStatusUpload('กรุณารอการอัพโหลดไฟล์')
                     }
                 },
                 (error) => {
@@ -162,12 +164,12 @@ const A4 = props => {
                     <Row>
                         <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="A4">
                                 <Option value="a4">A4</Option>
                             </Select></Col>
                         <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight} placeholder="Paper weight:">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Paper weight">
                                 <Option value="70">70 GSM</Option>
                                 <Option value="80">80 GSM</Option>
                                 <Option value="110">110 GSM</Option>
