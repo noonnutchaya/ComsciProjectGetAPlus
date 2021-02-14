@@ -1,29 +1,42 @@
+@import url("https://fonts.googleapis.com/css?family=Sarabun");
+
 #title {
-    text-align: center;
-    font-family: arial, sans-serif;
+  text-align: center;
+  font-family: arial, sans-serif;
 }
 
-#students {
-    text-align: center;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    border: 3px solid #ddd;
-    width: 100%;
+#setTable {
+  text-align: center;
+  font-family: "Sarabun";
+  border-collapse:separate;
+  border: 3px solid #D5D8DC;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  border-spacing: 0px;
+  width: 100%;
 }
 
-#students td, #students th {
-    border: 1px solid #ddd;
-    padding: 8px;
+#setTable td {
+  padding: 15px;
 }
 
-#students tr:nth-child(even){background-color: #f2f2f2;}
+#setTable th {
+  border: 1px  #D5D8DC;
+  padding: 8px;
+}
 
-#students tr:hover {background-color: #ddd;}
+#setTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-#students th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: center;
-    background-color: #4CAF50;
-    color: white;
+#setTable tr:hover {
+  background-color: #F9E79F  ;
+}
+
+#setTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color:#D5D8DC;
+  color: rgb(26, 22, 22);
 }

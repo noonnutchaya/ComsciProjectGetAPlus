@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import ShowOrderPage from './ShowOrderPage';
-import ConvertToImg from './ConvertToImg';
 
 
 

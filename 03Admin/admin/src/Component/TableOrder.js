@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { Link } from "react-router-dom";
 import '../CSS/table.css';
+import '../CSS/decoration.css';
 import firebase from 'firebase/app'
 const db = firebase.firestore();
 
@@ -14,65 +15,51 @@ class TableOrder extends Component {
      }
   
      componentDidMount(){
-        db.collection("Order").orderBy("orderDate", "desc").get().then((querySnapshot) => {
+        db.collection("FormatOrder").orderBy("OrderDate", "desc").get().then((querySnapshot) => {
             
             const dataList = querySnapshot.docs.map(doc => doc.data())
             console.log(dataList);
 
             this.setState({ data: dataList });
-            
-            
-            
-            // querySnapshot.docs((doc) => {
-                // let userOrderList = [];
-                // userOrderList.push({
-                //     Name: doc.data().Name,
-                //     orderDate: doc.data().orderDate,
-                //     PhoneNo: doc.data().PhoneNo
-                // });
-                // this.setState({ data: [] });
-                // console.log(doc.id, " => ", doc.data());
-                
-                
-            // });
+         
         });
-        // console.log(querySnapshot.docs);
+ 
      }
 
    
     renderTableHeader() {
         return <tr>
+            <th> วัน-เวลาการสั่งงาน </th>
             <th> ชื่อ </th>
-            <th> เวลา </th>
             <th> เบอร์โทรศัพท์ </th>
+            <th> รายละเอียดงาน </th>
+            <th> จำนวน </th>
+            <th> ราคา </th>
+            <th> ไฟล์งาน </th>
+
         </tr>
     }
 
     renderTableData() {
         return this.state.data.map((order, index) => {
-            const { Name, orderDate, PhoneNo } = order //destructuring
+            const { Name, Type, Phone, Description, Size, Weight, Color, Price, Quantity, Url, Dates, Month, Year } = order //destructuring
+            console.log(Url);
+            let detail = Url
+            console.log(detail);
             return (
-                <tr key={Name}><td>{Name}</td>
-                    <td>{orderDate.toDate().toDateString()}</td>
-                    <td>{PhoneNo}</td>
-
+                <tr key={Name}>
+                    <td>{Dates}-{Month}-{Year}</td>
+                    <td>{Name}</td>
+                    <td>{Phone}</td>
+                    <td>สั่งพิมพ์ {Type} {Color} ขนาด {Size} ({Weight} แกรม) - {Description}</td>
+                    <td>{Quantity} ชุด</td>
+                    <td>{Price} บาท</td>
+                    <td><button type="button" id = "buttonFile" onClick={(e) => {
+                        window.open(Url, "_blank")}}> File
+                    </button></td>
                 </tr>
                 
-                // <tr key={Name}>
-                //     <td>{orderDate}</td>
-                //     <td>{PhoneNo}</td>
-                //     {/* <td>
-                //         <Link
-                //             to={{
-                //                 pathname: "/showOrder",
-                //                 data: email // your data array of objects
-                //             }}
-                //         >
-                //             <button>Show</button>
-                //         </Link>
-                //     </td> */}
-                // </tr>
-            // )
+              
             )}
             
         )}
@@ -80,12 +67,13 @@ class TableOrder extends Component {
    render() { 
       return (
          <div>
-            <table id='students'>
+            <table id='setTable'>
                <tbody>
                 {this.renderTableHeader()}
                   {this.renderTableData()}
                </tbody>
             </table>
+            <div id = "footer"> Footer </div>
          </div>
       )
    }

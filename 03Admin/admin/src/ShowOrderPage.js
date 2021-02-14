@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from './firebase.js';
 import './CSS/reportOrder.css';
 import OrderList from './Component/TableOrder';
-// import NavBarVendor from './component/NavBarVendor';
+import Navbar from './Component/Navbar';
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
@@ -53,9 +53,9 @@ class ShowOrderPage extends React.Component {
   render() {
     return (
       <div>
-        {/* <NavBarVendor/> */}
+        <Navbar/>
         <div className="container">
-          <h1>Order List Table</h1>
+          <div id = "setCenterTitle">ORDER LIST ORDER</div>
           <OrderList/>
           {/* <button onClick={() => this.logout()}>Logout</button> */}
         </div>
