@@ -25,6 +25,7 @@ const Card = props => {
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
+    const [colorPaper, setColorPaper] = useState(null)
     //img
     const [image, setImage] = useState(null)
     const [status, setStatus] = useState("รอการตรวจสอบ")
@@ -51,6 +52,10 @@ const Card = props => {
     }
     function handleChangeQuantity(value) {
         setQuantity(value)
+        console.log(`selected ${value}`);
+    }
+    function handleChangeColorPaper(value) {
+        setColorPaper(value)
         console.log(`selected ${value}`);
     }
     const img = {
@@ -92,6 +97,7 @@ const Card = props => {
             Weight: weight,
             Quantity: quantity,
             Color: color,
+            ColorPaper: colorPaper,
             Url: imageUrl
         }) 
         .then(docRef => {
@@ -138,8 +144,8 @@ const Card = props => {
                     // complete function ....
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
                     setImageUrl(urlfile)
-                    const payload = { size, weight, quantity, color, urlfile }
-                    const res = await fetch('http://localhost:9000/calA4', {
+                    const payload = { size, weight, quantity, color, urlfile, colorPaper }
+                    const res = await fetch('http://localhost:9000/calCard', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -165,16 +171,16 @@ const Card = props => {
                     <Row>
                         <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="Size">
                                 <Option value="9 x 5.5 cm.">9 x 5.5 cm.</Option>
                                 <Option value="8.5 x 5.5 cm.">8.5 x 5.5 cm.</Option>
                             </Select></Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Paper weight">
-                                <Option value="70">120 GSM</Option>
+                                <Option value="120">120 GSM</Option>
                                 <Option value="150">150 GSM</Option>
-                                <Option value="70">180 GSM</Option>
+                                <Option value="180">180 GSM</Option>
                             </Select></Col>
                     </Row>
                     <Row id ="setSpaceTopComponent">
@@ -182,12 +188,16 @@ const Card = props => {
                             <div id = "setTextTopic">Required Quantity : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <InputNumber size="large" style={{ width: 180 }} min={1} max={1000} defaultValue={1} onChange={handleChangeQuantity} /></Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Color Paper: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Upload {...img} maxCount={1}>
-                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                            </Upload>
-                        </Col>
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeColorPaper}  placeholder="Color Paper">
+                                <Option value="White">White</Option>
+                                <Option value="Yellow">Yellow</Option>
+                                <Option value="Pink">Pink</Option>
+                                <Option value="Green">Green</Option>
+                                <Option value="Blue">Blue</Option>
+                            </Select></Col>
+
                     </Row>
                     <Row id ="setSpaceTopComponent">
                         <Col>
@@ -197,6 +207,12 @@ const Card = props => {
                                 <Radio.Button value="black">Black</Radio.Button>
                                 <Radio.Button value="color">Color</Radio.Button>
                             </Radio.Group>
+                        </Col>
+                        <Col><div id = "setTextTopic">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col>
+                            <Upload {...img} maxCount={1}>
+                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                            </Upload>
                         </Col>
                     </Row>
 

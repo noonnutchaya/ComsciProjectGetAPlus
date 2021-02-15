@@ -7,11 +7,12 @@ var pdf2img = require("pdf-img-convert");
 
 router.post("/", async function(req, res, next) {
   const { size, weight, quantity, color, urlfile } = req.body;
-  let [allPage, typeFile, realPrice, count] = [1, 0, 0, 0];
+  let [allPage, typeFile, realPrice, tempRealPrice, count] = [1, 0, 0, 0, 0];
   let [white, lightTone, darkTone] = [0, 0, 0];
   let [percentWhite, percentLightTone, percentDarkTone] = [0, 0, 0];
+  let [int_part, float_part] = [0, 0];
 
-  console.log("--- A4 ---");
+  console.log("--- Poster ---");
   console.log(
     "req -> " +
       "color: " +
@@ -45,87 +46,101 @@ router.post("/", async function(req, res, next) {
   let trainingData = await JSON.parse(fs.readFileSync(fileName, "utf8"));
   network.train(trainingData);
 
-  console.log("color printing");
-  for (i = 1; i <= allPage; i++) {
-    let image;
+  if (color == "color") {
+    console.log("color printing");
+    for (i = 1; i <= allPage; i++) {
+      let image;
 
-    if (typeFile == 1) {
-      image = await Jimp.read("./output" + i + ".png"); // pdf
-    } else {
-      image = await Jimp.read(urlfile); // image
-    }
-
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y, idx) => {
-      const thisColor = {
-        r: image.bitmap.data[idx + 0],
-        g: image.bitmap.data[idx + 1],
-        b: image.bitmap.data[idx + 2]
-      };
-      count += 1;
-
-      if (thisColor.r >= 250 && thisColor.g >= 250 && thisColor.b >= 250) {
-        white += 1;
+      if (typeFile == 1) {
+        image = await Jimp.read("./output" + i + ".png"); // pdf
       } else {
-        if (thisColor.r >= 200 || thisColor.g >= 200 || thisColor.b >= 200) {
-          lightTone += 1;
-        } else {
-          darkTone += 1;
-        }
+        image = await Jimp.read(urlfile); // image
       }
-    });
 
-    percentWhite = white / count;
-    percentDarkTone = darkTone / count;
-    percentLightTone = lightTone / count;
+      image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y, idx) => {
+        const thisColor = {
+          r: image.bitmap.data[idx + 0],
+          g: image.bitmap.data[idx + 1],
+          b: image.bitmap.data[idx + 2]
+        };
+        count += 1;
 
-    let priceProb = network.run([
-      percentWhite,
-      percentDarkTone,
-      percentLightTone
-    ]);
+        if (thisColor.r >= 250 && thisColor.g >= 250 && thisColor.b >= 250) {
+          white += 1;
+        } else {
+          if (thisColor.r >= 200 || thisColor.g >= 200 || thisColor.b >= 200) {
+            lightTone += 1;
+          } else {
+            darkTone += 1;
+          }
+        }
+      });
 
-    realPrice = realPrice + priceProb * 15;
-    console.log("Calculate Page - " + i + " - Price: " + priceProb * 15);
-    count = 0;
-    white = 0;
-    lightTone = 0;
-    darkTone = 0;
-  }
+      percentWhite = white / count;
+      percentDarkTone = darkTone / count;
+      percentLightTone = lightTone / count;
 
-  console.log("PriceWithDot: " + realPrice + " - " + color);
+      let priceProb = network.run([
+        percentWhite,
+        percentDarkTone,
+        percentLightTone
+      ]);
 
-  if (size == 'B5') {
-    realPrice = realPrice / 2 ;
-  }
+      tempRealPrice = priceProb * 15;   // price with dot
+      console.log("Calculate Page - " + i + " - Price: " + tempRealPrice);
 
-  int_part = Math.trunc(realPrice);
-  float_part = Number((realPrice - int_part).toFixed(2));
-  if (float_part < 0.5) {
-    realPrice = int_part;
+      int_part = Math.trunc(tempRealPrice);
+      float_part = Number((tempRealPrice - int_part).toFixed(2));
+      if (float_part < 0.5) {
+        tempRealPrice = int_part;
+      } else {
+        tempRealPrice = int_part + 1;
+      }
+
+      console.log("Price in term INT: " + tempRealPrice)
+
+      realPrice = realPrice + tempRealPrice;
+      count = 0;
+      white = 0;
+      lightTone = 0;
+      darkTone = 0;
+    }
   } else {
-    realPrice = int_part + 1;
+    console.log("black printing");
+    realPrice = allPage;
   }
 
-  console.log("check: " + realPrice);
-
-  if (weight == 80 && weight == 100) {
-    console.log("+1");
-    realPrice = realPrice + allPage; // 1 baht. per sheet
-  } else if (weight == 110 && weight == 120) {
-    console.log("+2");
-    realPrice = realPrice + (allPage * 2); // 2 baht. per sheet
-  } else if (weight == 150) {
-    console.log("+3");
-    realPrice = realPrice + (allPage * 3); // 3 baht. per sheet
+  if (size == "A5" && color == "color") {
+    // if black printing -> 1 baht only
+    realPrice = realPrice / 2;
+    let intPart = Math.trunc(realPrice);
+    let floatPart = Number((realPrice - intPart).toFixed(2));
+    if (floatPart > 0) {
+      realPrice = Math.trunc(realPrice) + 1;
+    }
+    console.log("A5 Color: " + realPrice );
   }
 
-  console.log("check 2: " + realPrice);
-  console.log("check 3 quantity: " + quantity);
+  console.log("PriceWithoutWeight: " + realPrice + " - " + color) + "--" + size;
+
+  if (weight == 80 || weight == 100) {
+  console.log("+3");
+  realPrice = realPrice + (allPage * 3); // 3 baht. per sheet
+} else if (weight == 110 || weight == 120) {
+  console.log("+4");
+  realPrice = realPrice + (allPage * 4); // 4 baht. per sheet
+} else if (weight == 150) {
+  console.log("+5");
+  realPrice = realPrice + (allPage * 5); // 5 baht. per sheet
+}
+
+  console.log("PricePerOne: " + realPrice);
+  console.log("Quantity: " + quantity);
   realPrice = realPrice * quantity;
 
   console.log("totalPrice: " + realPrice);
   console.log("-----------------------------------");
-  // res.send(realPrice.toString());
+  res.send(realPrice.toString());
 });
 
 module.exports = router;

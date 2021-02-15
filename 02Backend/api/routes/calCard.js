@@ -6,21 +6,14 @@ const brain = require("brain.js");
 var pdf2img = require("pdf-img-convert");
 
 router.post("/", async function(req, res, next) {
-  const { weight, quantity, color, urlfile } = req.body;
-  let [allPage, typeFile, realPrice, count] = [1, 0, 0, 0];
+  const { weight, quantity, color, urlfile, colorPaper } = req.body;
+  let [allPage, typeFile, realPrice, tempRealPrice, count] = [1, 0, 0, 0, 0];
   let [white, lightTone, darkTone] = [0, 0, 0];
   let [percentWhite, percentLightTone, percentDarkTone] = [0, 0, 0];
+  let [int_part, float_part] = [0, 0];
 
-  console.log("--- CARD ---");
-  console.log(
-    "req -> " +
-      "color: " +
-      color +
-      " - quantity: " +
-      quantity +
-      " - weight: " +
-      weight
-  );
+  console.log("--- Card ---");
+  console.log(req.body);
 
   if (urlfile.includes("pdf") || urlfile.includes("PDF")) {
     typeFile = 1;
@@ -85,8 +78,20 @@ router.post("/", async function(req, res, next) {
         percentLightTone
       ]);
 
-      realPrice = realPrice + priceProb * 15;
-      console.log("Calculate Page - " + i + " - Price: " + priceProb * 15);
+      tempRealPrice = priceProb * 15;   // price with dot
+      console.log("Calculate Page - " + i + " - Price: " + tempRealPrice);
+
+      int_part = Math.trunc(tempRealPrice);
+      float_part = Number((tempRealPrice - int_part).toFixed(2));
+      if (float_part < 0.5) {
+        tempRealPrice = int_part;
+      } else {
+        tempRealPrice = int_part + 1;
+      }
+
+      console.log("Price in term INT: " + tempRealPrice)
+
+      realPrice = realPrice + tempRealPrice;
       count = 0;
       white = 0;
       lightTone = 0;
@@ -97,28 +102,21 @@ router.post("/", async function(req, res, next) {
     realPrice = allPage;
   }
 
-  console.log("PriceWithDot: " + realPrice + " - " + color);
-
-  int_part = Math.trunc(realPrice);
-  float_part = Number((realPrice - int_part).toFixed(2));
-  if (float_part < 0.5) {
-    realPrice = int_part;
-  } else {
-    realPrice = int_part + 1;
-  }
-
-  console.log("check: " + realPrice);
+  console.log("PriceWithoutWeight: " + realPrice + " - " + color);
 
   if (weight == 120) {
     console.log("+1");
     realPrice = realPrice + allPage; // 1 baht. per sheet
-  } else if (weight == 150 || weight == 180) {
+  } else if (weight == 150) {
     console.log("+3");
     realPrice = realPrice + allPage * 3; // 3 baht. per sheet
-  } 
+  } else if (weight == 180) {
+    console.log("+5");
+    realPrice = realPrice + allPage * 5;  // 5 baht. per sheet
+  }
 
-  console.log("check 2: " + realPrice);
-  console.log("check 3 quantity: " + quantity);
+  console.log("PricePerOne: " + realPrice);
+  console.log("Quantity: " + quantity);
   realPrice = realPrice * quantity;
 
   console.log("totalPrice: " + realPrice);

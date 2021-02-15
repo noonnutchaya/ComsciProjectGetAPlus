@@ -55,7 +55,7 @@ const Type = props => {
                 >
                     {/* <Meta title="A4"></Meta> */}
                     <h1>A4</h1>
-                    <Button onClick={() => onClickA4()} style={{ marginLeft: 240 }}>Calculate</Button>
+                    <button id = "setHomebtn" onClick={() => onClickA4()} style={{ marginLeft: 240 }}>Calculate</button>
                 </Card>
 
                 </Col>
@@ -68,7 +68,7 @@ const Type = props => {
                     >
                         {/* <Meta title="A4"></Meta> */}
                         <h1>Poster</h1>
-                        <Button onClick={() => onClickPoster()}  style={{ marginLeft: 240 }}>Calculate</Button>
+                        <button id = "setHomebtn" onClick={() => onClickPoster()}  style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
                 <Col span={50}>
@@ -79,7 +79,7 @@ const Type = props => {
                     >
                         {/* <Meta title="A4"></Meta> */}
                         <h1>Envelope</h1>
-                        <Button onClick={() => onClickEnvelope()}  style={{ marginLeft: 240 }}>Calculate</Button>
+                        <button id = "setHomebtn" onClick={() => onClickEnvelope()}  style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
             </Row>
@@ -92,7 +92,7 @@ const Type = props => {
                 >
                     {/* <Meta title="A4"></Meta> */}
                     <h1>Card</h1>
-                    <Button onClick={() => onClickCard()} style={{ marginLeft: 240 }}>Calculate</Button>
+                    <button id = "setHomebtn" onClick={() => onClickCard()} style={{ marginLeft: 240 }}>Calculate</button>
                 </Card>
 
                 </Col>
@@ -105,7 +105,7 @@ const Type = props => {
                     >
                         {/* <Meta title="A4"></Meta> */}
                         <h1>Flayer</h1>
-                        <Button onClick={() => onClickFlayer()} style={{ marginLeft: 240 }}>Calculate</Button>
+                        <button id = "setHomebtn" onClick={() => onClickFlayer()} style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
                 <Col span={50}>
@@ -116,7 +116,7 @@ const Type = props => {
                     >
                         {/* <Meta title="A4"></Meta> */}
                         <h1>4 Pages</h1>
-                        <Button  onClick={() => onClick4Pages()} style={{ marginLeft: 240 }}>Calculate</Button>
+                        <button  id = "setHomebtn" onClick={() => onClick4Pages()} style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
             </Row>

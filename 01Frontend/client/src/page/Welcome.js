@@ -1,9 +1,8 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import { Result } from 'antd';
+import React, { useState } from 'react';
 
 const Welcome = props => {
-
+    
     return (
         <div  style={{ textAlign: 'center'}}>
             <h1  style={{ textAlign: 'center'}}>WELCOME</h1>
@@ -26,7 +25,6 @@ const Welcome = props => {
         </div>
 
     )
-
 }
 
 export default Welcome;

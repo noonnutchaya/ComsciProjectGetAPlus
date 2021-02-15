@@ -25,6 +25,7 @@ const Poster = props => {
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
+    
     //img
     const [image, setImage] = useState(null)
     const [status, setStatus] = useState("รอการตรวจสอบ")
@@ -139,7 +140,7 @@ const Poster = props => {
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
                     setImageUrl(urlfile)
                     const payload = { size, weight, quantity, color, urlfile }
-                    const res = await fetch('http://localhost:9000/calA4', {
+                    const res = await fetch('http://localhost:9000/calPoster', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -159,7 +160,7 @@ const Poster = props => {
     return (
         <div>
             <NavbarHead />
-            <h1 id ="setCenterTitle">4 PAGES PRINTING CALCULATOR</h1>
+            <h1 id ="setCenterTitle">POSTER PRINTING CALCULATOR</h1>
             <Row>
                 <Col id = "setCenterAllComponent">
                     <Row>
@@ -167,17 +168,17 @@ const Poster = props => {
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE">
                                 <Option value="A4">A4</Option>
-                                <Option value="B5">B5</Option>
+                                <Option value="A5">A5</Option>
                               
                             </Select></Col>
                         <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Photo Paper">
-                                <Option value="70">80 GSM</Option>
-                                <Option value="150">100 GSM</Option>
-                                <Option value="150">110 GSM</Option>
-                                <Option value="70">120 GSM</Option>
-                                <Option value="70">150 GSM</Option>
+                                <Option value="80">80 GSM</Option>
+                                <Option value="100">100 GSM</Option>
+                                <Option value="110">110 GSM</Option>
+                                <Option value="120">120 GSM</Option>
+                                <Option value="150">150 GSM</Option>
                             </Select></Col>
                     </Row>
                     <Row id ="setSpaceTopComponent">

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Sarabun");
+
 .logo {
     width: 120px;
     height: 31px;
@@ -15,4 +17,24 @@
   width: 300px;
   border: 3px solid #73AD21;
   padding: 10px;
+}
+
+#setHomebtn {
+  background-color: #fcfcbc; 
+  border: none;
+  color: black;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: 'Sarabun';
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+#setHomebtn:hover {
+  background-color: black;
+  color: yellow;
 }

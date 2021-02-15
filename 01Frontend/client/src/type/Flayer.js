@@ -60,6 +60,7 @@ const Flayer = props => {
     }
     function handleChangeColorPaper(value) {
         setColorPaper(value)
+        console.log(`selected ${value}`);
     }
     const img = {
         name: 'file',
@@ -100,6 +101,7 @@ const Flayer = props => {
             Weight: weight,
             Quantity: quantity,
             Color: color,
+            ColorPaper: colorPaper,
             Url: imageUrl
         }) 
         .then(docRef => {
@@ -146,8 +148,8 @@ const Flayer = props => {
                     // complete function ....
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
                     setImageUrl(urlfile)
-                    const payload = { size, weight, quantity, color, urlfile }
-                    const res = await fetch('http://localhost:9000/calA4', {
+                    const payload = { size, weight, quantity, color, urlfile, colorPaper }
+                    const res = await fetch('http://localhost:9000/calFlyer', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -176,13 +178,13 @@ const Flayer = props => {
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="A4">
                                 <Option value="a4">A4</Option>
                             </Select></Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Paper weight">
                                 <Option value="70">70 GSM</Option>
-                                <Option value="150">80 GSM</Option>
-                                <Option value="70">110 GSM</Option>
-                                <Option value="70">120 GSM</Option>
+                                <Option value="80">80 GSM</Option>
+                                <Option value="110">110 GSM</Option>
+                                <Option value="120">120 GSM</Option>
                             </Select></Col>
                     </Row>
                     <Row id ="setSpaceTopComponent">
@@ -193,11 +195,11 @@ const Flayer = props => {
                         <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Color Paper: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeColorPaper}  placeholder="Color Paper">
-                                <Option value="70">White</Option>
-                                <Option value="150">Yellow</Option>
-                                <Option value="70">Pink</Option>
-                                <Option value="70">Green</Option>
-                                <Option value="150">Blue</Option>
+                                <Option value="White">White</Option>
+                                <Option value="Yellow">Yellow</Option>
+                                <Option value="Pink">Pink</Option>
+                                <Option value="Green">Green</Option>
+                                <Option value="Blue">Blue</Option>
                             </Select></Col>
 
                     </Row>
@@ -205,12 +207,11 @@ const Flayer = props => {
                         <Col>
                             <div id = "setTextTopic">Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
                         <Col>
-                            <Radio.Group defaultValue="color" size="large" onChange={handleChangeColor}>
+                            <Radio.Group defaultValue="black" size="large" onChange={handleChangeColor}>
                                 <Radio.Button value="black">Black</Radio.Button>
-                                <Radio.Button value="color">Color</Radio.Button>
                             </Radio.Group>
                         </Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id = "setTextTopic">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Upload {...img} maxCount={1}>
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>

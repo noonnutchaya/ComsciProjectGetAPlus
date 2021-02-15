@@ -139,7 +139,7 @@ const FourPages = props => {
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
                     setImageUrl(urlfile)
                     const payload = { size, weight, quantity, color, urlfile }
-                    const res = await fetch('http://localhost:9000/calA4', {
+                    const res = await fetch('http://localhost:9000/cal4Page', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',

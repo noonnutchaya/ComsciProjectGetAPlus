@@ -119,9 +119,7 @@ const Envelope = props => {
         if (image == null) {
             message.error("กรุณาอัพโหลดไฟล์")
         } 
-        if (weight == 0) {
-            message.error("กรุณาเลือก paper weight")
-        }else {
+        else {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             uploadTask.on('state_changed',
                 async (snapshot) => {
@@ -139,7 +137,7 @@ const Envelope = props => {
                     const urlfile = await storage.ref('images').child(image.name).getDownloadURL()
                     setImageUrl(urlfile)
                     const payload = { size, weight, quantity, color, urlfile }
-                    const res = await fetch('http://localhost:9000/calA4', {
+                    const res = await fetch('http://localhost:9000/calEnvelope', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -166,33 +164,11 @@ const Envelope = props => {
                         <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE">
-                                <Option value="DL">Envelope DL (110.0 mm x 220.0 mm)</Option>
-                                <Option value="COM10">Envelope COM10 (104.7 mm x 241.3 mm)</Option>
-                                <Option value="C5">Envelope C5 (162.0 mm x 229.0 mm)</Option>    
+                                <Option value="DL">Envelope DL (11.0 cm x 22.0 cm)</Option>
+                                <Option value="C5">Envelope C5 (16.2 cm x 22.9 cm)</Option>    
                             </Select></Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Paper weight">
-                                <Option value="70">60 GSM</Option>
-                                <Option value="150">70 GSM</Option>
-                                <Option value="70">80 GSM</Option>
-                            </Select></Col>
-                    </Row>
-                    <Row id ="setSpaceTopComponent">
-                        <Col>
-                            <div id = "setTextTopic">Required Quantity : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
-                        <Col>
-                            <InputNumber size="large" style={{ width: 180 }} min={1} max={1000} defaultValue={1} onChange={handleChangeQuantity} /></Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
-                        <Col>
-                            <Upload {...img} maxCount={1}>
-                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                            </Upload>
-                        </Col>
-                    </Row>
-                    <Row id ="setSpaceTopComponent">
-                        <Col>
-                            <div id = "setTextTopic">Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
+                            <div id = "setTextTopic">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
                         <Col>
                             <Radio.Group defaultValue="color" size="large" onChange={handleChangeColor}>
                                 <Radio.Button value="black">Black</Radio.Button>
@@ -200,6 +176,19 @@ const Envelope = props => {
                             </Radio.Group>
                         </Col>
                     </Row>
+                    <Row id ="setSpaceTopComponent">
+                        <Col>
+                            <div id = "setTextTopic">Required Quantity : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col>
+                            <InputNumber size="large" style={{ width: 180 }} min={1} max={1000} defaultValue={1} onChange={handleChangeQuantity} /></Col>
+                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col>
+                            <Upload {...img} maxCount={1}>
+                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                            </Upload>
+                        </Col>
+                    </Row>
+                    
 
                     <Row><Col><button onClick={handleSubmit} id = "setEffectButton"> CALCULATE </button></Col></Row>
                     

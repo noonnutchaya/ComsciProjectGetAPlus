@@ -17,7 +17,7 @@ import Finish from './Finish/Finish'
 function App() {
   return (
   
-      // <div> <Order/></div>
+      // <div> <Welcome/></div>
     <Router>
     <Switch>
       {/* <Route exact path='/' component={Order} />
