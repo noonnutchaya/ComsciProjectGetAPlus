@@ -1,27 +1,34 @@
 import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
+import { Col, Row } from 'antd';
+import books from '../img/books.png'
+import {Helmet} from 'react-helmet';
 
 const Welcome = props => {
     
     return (
-        <div  style={{ textAlign: 'center'}}>
-            <h1  style={{ textAlign: 'center'}}>WELCOME</h1>
-            <h2 style={{ textAlign: 'center' }}> เนื่องจากทางที่บ้านของผู้จัดทำเป็นศูนย์ทำเอกสารโดยมีงานเอกสารที่เกี่ยวกับการถ่ายเอกสารการพิมพ์ภาพสีขนาด </h2>
-            <h2 style={{ textAlign: 'center' }}>  ต่าง ๆ การเข้าเล่มรูปแบบต่าง ๆ แต่มีปัญหาเกี่ยวกับเรื่องราคาในการให้บริการการพิมพ์ภาพสีมาเป็นเวลานาน เนื่องจากทางร้านจะ</h2>
-            <h2 style={{ textAlign: 'center' }}>  คิดราคาพิมพ์ภาพสีจากขนาดของภาพและสีที่อยู่ในภาพพิมพ์ (พิจารณาเฉดและปริมาณของสี - สีต่าง ๆหรือขาวดำ) โดยการคาด</h2>
-            <h2 style={{ textAlign: 'center' }}> คะเนจากสายตา ทำให้เวลาแจ้งค่าบริการให้แก่ลูกค้าเกิดเหตุการณ์ว่าคนภายในร้านจะแจ้งราคาไม่ตรงกัน ทำให้บางครั้งคนที่แจ้ง</h2>
-            <h2 style={{ textAlign: 'center' }}>  ราคาอาจจะเป็นคนที่ไม่รู้ต้นทุนทำให้บางครั้งเกิดการขาดทุนในการให้บริการหรือแจ้งราคาที่แพงเกินไปให้แก่ลูกค้า จากปัญหานี้</h2>
-            <h2 style={{ textAlign: 'center' }}>ผู้จัดทำจึงต้องการที่จะทำ Software ขึ้นมาเพื่อจัดการปัญหาของการคิดราคาภาพพิมพ์ให้อยู่ให้อยู่ในมาตราฐานเดียวกัน</h2>
-            <h2 style={{ textAlign: 'center' }}>เนื่องจากปัญหาและแนวคิดด้านต้น ทางผู้จัดทำจึงสนใจที่จะทำตัวเว็บไซต์ที่ใช้ในการคิดราคาภาพพิมพ์และได้เพิ่มในส่วน</h2>
-            <h2 style={{ textAlign: 'center' }}> ของการคิดราคางานในรูปแบบต่าง ๆ เช่น การคิดราคาการพิมพ์ซองจดหมาย การคิดราคาของภาพพิมพ์ขนาดต่าง ๆ  เป็นต้น  </h2>
-            <h2 style={{ textAlign: 'center' }}>เพิ่มให้ราคาของงานในรูปแบบงานต่าง ๆ ถูกต้องและเป็นมาตรฐานมากขึ้น</h2>
-{/*             
-            <h2> 
-                ของการคิดราคางานในรูปแบบต่าง ๆ เช่น การคิดราคาการพิมพ์ซองจดหมาย การคิดราคาของภาพพิมพ์ขนาดต่าง ๆ  เป็นต้น เพิ่มให้ราคาของงานในรูปแบบงานต่าง ๆ ถูกต้องและเป็นมาตรฐานมากขึ้น"
-              </h2>
-         */}
-            {/* <h1>WELCOME</h1>
-            <h2> </h2> */}
+
+
+        <div style={{ textAlign: 'center' }}>
+            <div>
+
+                <Row>
+                    <Col style={{backgroundColor: "#fcfcbc", justifyContent: "center",padding: "250px", display: "inline-block"}}>
+                        <h1 className="fontNongNoon">NONGNOON</h1>
+                        <div className="fontNongNoon" style={{fontSize: "20px"}}>Online calculating for printing cost</div>
+                        {/* <div><button id = "setStartbtn" style={{marginTop: "30px"}} >Let's Start</button></div> */}
+                        
+                        
+                    </Col>
+                    <Col>
+                      <img style={{ width: "100%", height: "100%" }} src={books} />
+                    </Col>    
+                </Row>
+            </div>
+
+          
+            
+          
         </div>
 
     )

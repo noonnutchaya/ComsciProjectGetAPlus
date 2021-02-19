@@ -46,15 +46,15 @@ const Type = props => {
    
     return (
         <div>
-            <h1 style={{ textAlign: 'center' }}>User also calculate price for</h1>
-            <Row gutter={[24, 16]}>
+            <h1 className="fontTypeHeader" style={{ textAlign: 'center' }}>User also calculate price for</h1>
+            <Row gutter={[24, 16]} style={{marginTop: "25px"}}>
                 <Col span={50} > <Card
                     hoverable
                     style={{ width: 370, height: 390 }}
                     cover={<img className="img" alt="example" src={a4} />}
                 >
                     {/* <Meta title="A4"></Meta> */}
-                    <h1>A4</h1>
+                    <h1 className="fontType" >A4</h1>
                     <button id = "setHomebtn" onClick={() => onClickA4()} style={{ marginLeft: 240 }}>Calculate</button>
                 </Card>
 
@@ -67,7 +67,7 @@ const Type = props => {
                         cover={<img alt="example" src={poster} />}
                     >
                         {/* <Meta title="A4"></Meta> */}
-                        <h1>Poster</h1>
+                        <h1 className="fontType" >Poster</h1>
                         <button id = "setHomebtn" onClick={() => onClickPoster()}  style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
@@ -78,7 +78,7 @@ const Type = props => {
                         cover={<img alt="example" src={envelope} />}
                     >
                         {/* <Meta title="A4"></Meta> */}
-                        <h1>Envelope</h1>
+                        <h1 className="fontType">Envelope</h1>
                         <button id = "setHomebtn" onClick={() => onClickEnvelope()}  style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
@@ -91,7 +91,7 @@ const Type = props => {
                     cover={<img alt="example" src={card} />}
                 >
                     {/* <Meta title="A4"></Meta> */}
-                    <h1>Card</h1>
+                    <h1 className="fontType">Card</h1>
                     <button id = "setHomebtn" onClick={() => onClickCard()} style={{ marginLeft: 240 }}>Calculate</button>
                 </Card>
 
@@ -104,7 +104,7 @@ const Type = props => {
                         cover={<img alt="example" src={flayer} />}
                     >
                         {/* <Meta title="A4"></Meta> */}
-                        <h1>Flayer</h1>
+                        <h1 className="fontType">Flayer</h1>
                         <button id = "setHomebtn" onClick={() => onClickFlayer()} style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
@@ -115,7 +115,7 @@ const Type = props => {
                         cover={<img src={fourpage} />}
                     >
                         {/* <Meta title="A4"></Meta> */}
-                        <h1>4 Pages</h1>
+                        <h1 className="fontType">4 Pages</h1>
                         <button  id = "setHomebtn" onClick={() => onClick4Pages()} style={{ marginLeft: 240 }}>Calculate</button>
                     </Card>
                 </Col>
