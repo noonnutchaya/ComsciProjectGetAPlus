@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 #setCenterTitle {
   text-align: center;
   margin-top: 5%;
@@ -84,4 +85,20 @@
   background-color:  #195B52;
   transform: rotate(45deg);
   z-index: -1;
+}
+
+.setPrice{
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  font-weight: 850;
+  letter-spacing: 8px;
+  font-size: 60px;
+  color: #292929;
+}
+.setTextModal{
+  font-family: 'Source Sans Pro', sans-serif;
+  letter-spacing: 3px;
+  font-size: 23px;
+  color: #292929;
 }

@@ -205,11 +205,19 @@ const A4 = props => {
 
                 </Col>
             </Row>
-            <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} >
-                <p>{json}</p>
+            <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
+                >
+                <p className="setTextModal">Type: A4 </p>
+                <p className="setTextModal">Size: {size} </p>
+                <p className="setTextModal">Paper weight: {weight} </p>
+                <p className="setTextModal">Required Quantity: {quantity} </p>
+                <p className="setTextModal">Black or Colors: {color} </p>
+                <p className="setTextModal" style={{fontWeight: 850}}>Total:    {json}   bath</p>
+                <p className="setPrice"> </p>
             </Modal>
+
             <Drawer
-                title="Create a new account"
+                title="Create Order"
                 width={720}
                 visible={isDrawerVisible}
                 bodyStyle={{ paddingBottom: 80 }}
