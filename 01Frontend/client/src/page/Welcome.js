@@ -13,7 +13,7 @@ const Welcome = props => {
             <div>
 
                 <Row>
-                    <Col style={{backgroundColor: "#fcfcbc", justifyContent: "center",padding: "250px", display: "inline-block"}}>
+                    <Col style={{backgroundColor: "#fcfcbc", justifyContent: "center",padding: "200px", display: "inline-block"}}>
                         <h1 className="fontNongNoon">NONGNOON</h1>
                         <div className="fontNongNoon" style={{fontSize: "20px"}}>Online calculating for printing cost</div>
                         {/* <div><button id = "setStartbtn" style={{marginTop: "30px"}} >Let's Start</button></div> */}

@@ -18,7 +18,7 @@ const Homepage = props => {
             <Row >
                 <Col className="setType"><Type/></Col>
             </Row>
-            <Footer className="setFooter"></Footer>
+            <Footer className="setFooter" style={{ backgroundColor: '#fcfcbc'}}></Footer>
 
         </div>
     )

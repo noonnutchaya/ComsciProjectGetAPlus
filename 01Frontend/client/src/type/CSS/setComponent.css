@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Sarabun");
 #setCenterTitle {
   text-align: center;
   margin-top: 5%;
@@ -92,13 +94,36 @@
   margin-top: 5%;
   margin-bottom: 5%;
   font-weight: 850;
-  letter-spacing: 8px;
-  font-size: 60px;
+  letter-spacing: 5px;
+  font-size: 30px;
   color: #292929;
+  font-family: 'Sarabun';
 }
 .setTextModal{
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Sarabun';
   letter-spacing: 3px;
-  font-size: 23px;
+  font-size: 15px;
   color: #292929;
+  margin-top: -18px;
+  margin-left: 45px;
+}
+.setTitleTextModal{
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 20px;
+  color: #292929;
+  font-family: 'Sarabun';
+  /* margin-top: -20px; */
+  margin-bottom: 30px;
+}
+.setTitleModal{
+  font-weight: 800;
+  font-size: 35px;
+  /* font-family: 'Sarabun'; */
+  letter-spacing: 3px;
+  color:#195B52;
+  text-align: center;
+  margin-top: 23px;
+  background-color:#F9C65D;
+   
 }

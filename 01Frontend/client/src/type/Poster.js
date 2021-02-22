@@ -71,7 +71,7 @@ const Poster = props => {
     }
     function handleOk() {
         setIsModalVisible(false);
-        setIsDrawerVisible(true)
+        // setIsDrawerVisible(true)
     };
 
     function handleCancel() {
@@ -208,9 +208,17 @@ const Poster = props => {
                     
                 </Col>
             </Row>
-            <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} >
-                <p>{json}</p>
+            <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
+                >
+                <h1 className="setTitleModal">Order Summary</h1>
+                <p className="setTextModal">Type: Poster </p>
+                <p className="setTextModal">Size: {size} </p>
+                <p className="setTextModal">Paper weight: {weight} </p>
+                <p className="setTextModal">Required Quantity: {quantity} </p>
+                <p className="setTextModal">Black or Colors: {color} </p>
+                <p className="setPrice"> Total:    {json}   Baht.</p>
             </Modal>
+           
             <Drawer
           title="Create a new account"
           width={720}

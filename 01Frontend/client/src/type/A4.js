@@ -70,7 +70,7 @@ const A4 = props => {
     }
     function handleOk() {
         setIsModalVisible(false);
-        setIsDrawerVisible(true)
+        // setIsDrawerVisible(true)
     };
 
     function handleCancel() {
@@ -205,15 +205,16 @@ const A4 = props => {
 
                 </Col>
             </Row>
-            <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
+            <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
                 >
+                <h1 className="setTitleModal">Order Summary</h1>
+                <p className="setTitleTextModal">Details </p>
                 <p className="setTextModal">Type: A4 </p>
                 <p className="setTextModal">Size: {size} </p>
                 <p className="setTextModal">Paper weight: {weight} </p>
                 <p className="setTextModal">Required Quantity: {quantity} </p>
                 <p className="setTextModal">Black or Colors: {color} </p>
-                <p className="setTextModal" style={{fontWeight: 850}}>Total:    {json}   bath</p>
-                <p className="setPrice"> </p>
+                <p className="setPrice"> Total:    {json}   Baht.</p>
             </Modal>
 
             <Drawer
@@ -256,9 +257,9 @@ const A4 = props => {
                             <Form.Item
                                 name="phone"
                                 label="phone"
-                                rules={[{ required: true, message: 'Please select an owner' }]}
+                                rules={[{ required: true, message: 'Please select user phone' }]}
                             >
-                                <Input placeholder="Please enter user name" onChange={onChangePhone} />
+                                <Input placeholder="Please select user phone" onChange={onChangePhone} />
 
                             </Form.Item>
                         </Col>
@@ -271,11 +272,11 @@ const A4 = props => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'please enter url description',
+                                        message: 'please enter description',
                                     },
                                 ]}
                             >
-                                <Input.TextArea rows={4} placeholder="please enter url description" onChange={onChangeDescription} />
+                                <Input.TextArea rows={4} placeholder="please enter description" onChange={onChangeDescription} />
                             </Form.Item>
                         </Col>
                     </Row>
