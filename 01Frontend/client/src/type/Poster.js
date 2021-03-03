@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Layout, Menu, Breadcrumb, Row, Col, Select, InputNumber, Upload, message, Button, Radio, Modal,Input , Form, Drawer} from 'antd';
+import { Layout, Menu, Breadcrumb, Row, Col, Select, InputNumber, Upload, message, Button, Radio, Modal, Input, Form, Drawer } from 'antd';
 import 'antd/dist/antd.css';
 import NavbarHead from '../page/NavbarHead'
 import '../type/CSS/setComponent.css';
@@ -18,6 +18,16 @@ function getBase64(img, callback) {
     reader.readAsDataURL(img);
 }
 
+const onNumberOnlyChange = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const isValid = new RegExp("[0-9]").test(keyValue);
+    if (!isValid) {
+        event.preventDefault();
+        return;
+    }
+};
+
 const Poster = props => {
     // const [count, setCount] = useState(0)
     const [size, setSize] = useState('A4')
@@ -25,7 +35,7 @@ const Poster = props => {
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
-    
+
     //img
     const [image, setImage] = useState(null)
     const [status, setStatus] = useState("รอการตรวจสอบ")
@@ -37,9 +47,14 @@ const Poster = props => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     //input Drawer
-    const [name,setName] = useState('')
-    const [phone,setPhone] = useState('')
-    const [description,setDescription] = useState('')
+    const [name, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [description, setDescription] = useState('')
+    //
+    // checkphone
+    const [phoneCheck, setPhoneCheck] = useState('')
+    const [phoneError, setPhoneError] = useState('')
+
 
 
     function handleChangeSize(value) {
@@ -53,6 +68,19 @@ const Poster = props => {
     function handleChangeQuantity(value) {
         setQuantity(value)
         console.log(`selected ${value}`);
+    }
+    function phonenumber(e) {
+        console.log(e)
+        let inputtxt = e
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            // callback('กรุณายืนยันรหัสผ่านให้ถูกต้อง');
+            return false;
+        }
+        // callback();
     }
     const img = {
         name: 'file',
@@ -77,44 +105,51 @@ const Poster = props => {
     function handleCancel() {
         setIsModalVisible(false);
     };
-    function onCloseDrawer(){
+    function onCloseDrawer() {
         setIsDrawerVisible(false)
     }
-    function onSubmitDrawer(){
+    function onSubmitDrawer() {
         if (name == '') {
             message.error("กรุณากรอกชื่อ")
-        } 
+        }
         if (phone == '') {
             message.error("กรุณากรอกเบอร์โทร")
-        } 
-        else{
+        }
+        if (name != '' && phone != '') {
+            var ID = Math.floor(Date.now() / 1000);
+            // let documentID;
+            const date = firebase.firestore.Timestamp.fromDate(new Date());
             db.collection('Order').add({
                 Name: name,
-                Phone:phone,
-                Description:description,
-                Price:json,
-                Size:size,
+                Phone: phone,
+                Description: description,
+                Price: json,
+                Size: size,
                 Weight: weight,
                 Quantity: quantity,
                 Color: color,
-                Url: imageUrl
-            }) 
-            .then(docRef => {
-                console.log("add success~") 
-                window.location.href = "/Finish"
-            })  
+                Url: imageUrl,
+                status: 'รอการยืนยัน',
+                OrderDate: date,
+                id: ID
+            })
+                .then(docRef => {
+                    // documentID =  docRef.id
+                    console.log("add success~")
+                    window.location.href = "/Finish"
+                })
 
         }
-        
+
     }
-    function onChangeName(e){
+    function onChangeName(e) {
         console.log(e.target.value);
         setName(e.target.value)
     }
-    function onChangePhone(e){
+    function onChangePhone(e) {
         setPhone(e.target.value)
     }
-    function onChangeDescription(e){
+    function onChangeDescription(e) {
         setDescription(e.target.value)
     }
 
@@ -126,10 +161,10 @@ const Poster = props => {
         console.log("image", image);
         if (image == null) {
             message.error("กรุณา Upload ไฟล์")
-        } 
+        }
         if (weight == 0) {
             message.error("กรุณาเลือก paper weight")
-        }else {
+        } else {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             uploadTask.on('state_changed',
                 async (snapshot) => {
@@ -167,20 +202,20 @@ const Poster = props => {
     return (
         <div>
             <NavbarHead />
-            <h1 id ="setCenterTitle">POSTER PRINTING CALCULATOR</h1>
+            <h1 id="setCenterTitle">POSTER PRINTING CALCULATOR</h1>
             <Row>
-                <Col id = "setCenterAllComponent">
+                <Col id="setCenterAllComponent">
                     <Row>
-                        <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id="setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE - A4">
                                 <Option value="A4">A4</Option>
                                 <Option value="A5">A5</Option>
-                              
+
                             </Select></Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id="setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Photo Paper - 80 GSM">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight} placeholder="Photo Paper - 80 GSM">
                                 <Option value="80">80 GSM</Option>
                                 <Option value="100">100 GSM</Option>
                                 <Option value="110">110 GSM</Option>
@@ -188,21 +223,21 @@ const Poster = props => {
                                 <Option value="150">150 GSM</Option>
                             </Select></Col>
                     </Row>
-                    <Row id ="setSpaceTopComponent">
+                    <Row id="setSpaceTopComponent">
                         <Col>
-                            <div id = "setTextTopic">Required Quantity : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                            <div id="setTextTopic">Required Quantity : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <InputNumber size="large" style={{ width: 180 }} min={1} max={1000} defaultValue={1} onChange={handleChangeQuantity} /></Col>
-                        <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
+                        <Col><div id="setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Upload {...img} maxCount={1}>
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
                             </Upload>
                         </Col>
                     </Row>
-                    <Row id ="setSpaceTopComponent">
+                    <Row id="setSpaceTopComponent">
                         <Col>
-                            <div id = "setTextTopic">Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
+                            <div id="setTextTopic">Black or Colors : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>  </Col>
                         <Col>
                             <Radio.Group defaultValue="color" size="large" onChange={handleChangeColor}>
                                 <Radio.Button value="black">Black</Radio.Button>
@@ -211,12 +246,12 @@ const Poster = props => {
                         </Col>
                     </Row>
 
-                    <Row><Col><button onClick={handleSubmit} id = "setEffectButton"> CALCULATE </button></Col></Row>
-                    
+                    <Row><Col><button onClick={handleSubmit} id="setEffectButton"> CALCULATE </button></Col></Row>
+
                 </Col>
             </Row>
-            <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
-                >
+            <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Create Order"
+            >
                 <h1 className="setTitleModal">Order Summary</h1>
                 <p className="setTitleTextModal">Details </p>
                 <p className="setTextModal">Type: Poster </p>
@@ -226,72 +261,86 @@ const Poster = props => {
                 <p className="setTextModal">Black or Colors: {color} </p>
                 <p className="setPrice"> Total:    {json}   Baht.</p>
             </Modal>
-           
+
             <Drawer
-          title="Create a new account"
-          width={720}
-          visible={isDrawerVisible}
-          bodyStyle={{ paddingBottom: 80 }}
-          footer={
-            <div
-              style={{
-                textAlign: 'right',
-              }}
-            >
-              <Button onClick={onCloseDrawer} style={{ marginRight: 8 }}>
-                Cancel
-              </Button>
-              <Button onClick={onSubmitDrawer} type="primary">
-                Submit
-              </Button>
-            </div>
-          }
-        >
-          <Form layout="vertical" hideRequiredMark>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="name"
-                  label="Name"
-                  rules={[{ required: true, message: 'Please enter user name' }]}
-                >
-                  <Input placeholder="Please enter user name" onChange={onChangeName}/>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-               
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="phone"
-                  label="phone"
-                  rules={[{ required: true, message: 'Please select an owner' }]}
-                >
-                    <Input placeholder="Please enter user name" onChange={onChangePhone}/>
+                title="Create Order"
+                width={720}
+                visible={isDrawerVisible}
+                bodyStyle={{ paddingBottom: 80 }}
+                footer={
+                    <div
+                        style={{
+                            textAlign: 'right',
+                        }}
+                    >
                 
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name="description"
-                  label="Description"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please enter url description',
-                    },
-                  ]}
-                >
-                  <Input.TextArea rows={4} placeholder="please enter url description"  onChange={onChangeDescription}/>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </Drawer>
+                    </div>
+                }
+            >
+                <Form layout="vertical" hideRequiredMark>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="name"
+                                label="Name"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'กรุณากรอกชื่อ',
+                                        whitespace: true,
+                                    },
+
+                                ]}
+                            >
+                                <Input placeholder="Please enter name" onChange={onChangeName} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="phone"
+                                label="Phone"
+                                rules={[
+                                    // {
+                                    //     required: true,
+                                    //     message: 'Please input Phone Number!',
+                                    //     whitespace: true,
+                                    // },
+                                    {
+                                        validator: (_, value) =>
+                                            phonenumber(value) ? Promise.resolve() : Promise.reject(new Error('กรุณากรอกเบอร์โทรให้ถูกต้อง'))
+                                    },
+                                ]}
+                            >
+                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please enter phone number" onChange={onChangePhone} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item
+                                name="description"
+                                label="Description"
+
+                            >
+                                <Input.TextArea rows={4} placeholder="please enter description" onChange={onChangeDescription} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label=" " colon={false}>
+                                <Button style={{ marginTop: "1", marginLeft: 500 }} htmlType="submit" onClick={onSubmitDrawer}>
+                                    Submit</Button>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+            </Drawer>
             <Footer style={{ backgroundColor: '#fcfcbc', bottom: 0, marginBottom: 0, position: 'fixed', width: '3000px' }}></Footer>
         </div>
 

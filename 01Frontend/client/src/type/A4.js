@@ -116,7 +116,7 @@ const A4 = props => {
         if (phone == '') {
             message.error("กรุณากรอกเบอร์โทร")
         }
-        else {
+        if (name != '' && phone != '') {
             var ID = Math.floor(Date.now() / 1000);
             // let documentID;
             const date = firebase.firestore.Timestamp.fromDate(new Date());
@@ -133,12 +133,11 @@ const A4 = props => {
                 status: 'รอการยืนยัน',
                 OrderDate: date,
                 id: ID
+            }).then(docRef => {
+                // documentID =  docRef.id
+                console.log("add success~")
+                window.location.href = "/Finish"
             })
-                .then(docRef => {
-                    // documentID =  docRef.id
-                    console.log("add success~")
-                    window.location.href = "/Finish"
-                })
 
         }
 
@@ -336,7 +335,7 @@ const A4 = props => {
                                       },
                                 ]}
                             >
-                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please enter phone number" />
+                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please enter phone number" onChange={onChangePhone} />
                             </Form.Item>
                         </Col>
                     </Row>
