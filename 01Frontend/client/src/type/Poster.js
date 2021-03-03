@@ -21,7 +21,7 @@ function getBase64(img, callback) {
 const Poster = props => {
     // const [count, setCount] = useState(0)
     const [size, setSize] = useState('A4')
-    const [weight, setWeight] = useState(0) // paper
+    const [weight, setWeight] = useState('80') // paper
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
@@ -71,7 +71,7 @@ const Poster = props => {
     }
     function handleOk() {
         setIsModalVisible(false);
-        // setIsDrawerVisible(true)
+        setIsDrawerVisible(true)
     };
 
     function handleCancel() {
@@ -81,24 +81,31 @@ const Poster = props => {
         setIsDrawerVisible(false)
     }
     function onSubmitDrawer(){
-        console.log(name);
-        console.log(phone);
-        console.log(description);
-        db.collection('Order').add({
-            Name: name,
-            Phone:phone,
-            Description:description,
-            Price:json,
-            Size:size,
-            Weight: weight,
-            Quantity: quantity,
-            Color: color,
-            Url: imageUrl
-        }) 
-        .then(docRef => {
-            console.log("add success~") 
-            window.location.href = "/Finish"
-        })  
+        if (name == '') {
+            message.error("กรุณากรอกชื่อ")
+        } 
+        if (phone == '') {
+            message.error("กรุณากรอกเบอร์โทร")
+        } 
+        else{
+            db.collection('Order').add({
+                Name: name,
+                Phone:phone,
+                Description:description,
+                Price:json,
+                Size:size,
+                Weight: weight,
+                Quantity: quantity,
+                Color: color,
+                Url: imageUrl
+            }) 
+            .then(docRef => {
+                console.log("add success~") 
+                window.location.href = "/Finish"
+            })  
+
+        }
+        
     }
     function onChangeName(e){
         console.log(e.target.value);
@@ -118,7 +125,7 @@ const Poster = props => {
         console.log('Received values of form: ', e);
         console.log("image", image);
         if (image == null) {
-            message.error("กรุณาอัพโหลดไฟล์")
+            message.error("กรุณา Upload ไฟล์")
         } 
         if (weight == 0) {
             message.error("กรุณาเลือก paper weight")
@@ -166,14 +173,14 @@ const Poster = props => {
                     <Row>
                         <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE - A4">
                                 <Option value="A4">A4</Option>
                                 <Option value="A5">A5</Option>
                               
                             </Select></Col>
                         <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Photo Paper">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Photo Paper - 80 GSM">
                                 <Option value="80">80 GSM</Option>
                                 <Option value="100">100 GSM</Option>
                                 <Option value="110">110 GSM</Option>
@@ -211,9 +218,10 @@ const Poster = props => {
             <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
                 >
                 <h1 className="setTitleModal">Order Summary</h1>
+                <p className="setTitleTextModal">Details </p>
                 <p className="setTextModal">Type: Poster </p>
                 <p className="setTextModal">Size: {size} </p>
-                <p className="setTextModal">Paper weight: {weight} </p>
+                <p className="setTextModal">Paper weight: {weight} GSM</p>
                 <p className="setTextModal">Required Quantity: {quantity} </p>
                 <p className="setTextModal">Black or Colors: {color} </p>
                 <p className="setPrice"> Total:    {json}   Baht.</p>

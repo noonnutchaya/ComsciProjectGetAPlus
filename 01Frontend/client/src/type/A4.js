@@ -7,8 +7,6 @@ import btn from '../img/btn.png';
 import { UploadOutlined } from '@ant-design/icons';
 import { storage } from '../firebase';
 import firebase from '../firebase'
-import { getKeyThenIncreaseKey } from 'antd/lib/message';
-
 const { Option } = Select;
 const db = firebase.firestore();
 const { Header, Content, Footer } = Layout;
@@ -18,13 +16,24 @@ function getBase64(img, callback) {
     reader.readAsDataURL(img);
 }
 
+const onNumberOnlyChange = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const isValid = new RegExp("[0-9]").test(keyValue);
+    if (!isValid) {
+        event.preventDefault();
+        return;
+    }
+};
+
 const A4 = props => {
     // const [count, setCount] = useState(0)
     const [size, setSize] = useState('A4')
-    const [weight, setWeight] = useState(0) // paper
+    const [weight, setWeight] = useState('70') // paper
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
+
     //img
     const [image, setImage] = useState(null)
     const [status, setStatus] = useState("รอการตรวจสอบ")
@@ -39,6 +48,11 @@ const A4 = props => {
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [description, setDescription] = useState('')
+    // checkphone
+    const [phoneCheck, setPhoneCheck] = useState('')
+    const [phoneError, setPhoneError] = useState('')
+
+
 
 
     function handleChangeSize(value) {
@@ -53,6 +67,22 @@ const A4 = props => {
         setQuantity(value)
         console.log(`selected ${value}`);
     }
+    function phonenumber( e) {
+        console.log(e)
+        let inputtxt = e
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            // callback('กรุณายืนยันรหัสผ่านให้ถูกต้อง');
+            return false;
+        }
+        // callback();
+    }
+
+
+
     const img = {
         name: 'file',
         headers: {
@@ -70,7 +100,7 @@ const A4 = props => {
     }
     function handleOk() {
         setIsModalVisible(false);
-        // setIsDrawerVisible(true)
+        setIsDrawerVisible(true)
     };
 
     function handleCancel() {
@@ -80,24 +110,40 @@ const A4 = props => {
         setIsDrawerVisible(false)
     }
     function onSubmitDrawer() {
-        const date = firebase.firestore.Timestamp.fromDate(new Date());
-        db.collection('Order').add({
-            Name: name,
-            Phone: phone,
-            Description: description,
-            Price: json,
-            Size: size,
-            Weight: weight,
-            Quantity: quantity,
-            Color: color,
-            Url: imageUrl,
-            OrderDate: date
-        })
-            .then(docRef => {
-                console.log("add success~")
-                window.location.href = "/Finish"
+        if (name == '') {
+            message.error("กรุณากรอกชื่อ")
+        }
+        if (phone == '') {
+            message.error("กรุณากรอกเบอร์โทร")
+        }
+        else {
+            var ID = Math.floor(Date.now() / 1000);
+            // let documentID;
+            const date = firebase.firestore.Timestamp.fromDate(new Date());
+            db.collection('Order').add({
+                Name: name,
+                Phone: phone,
+                Description: description,
+                Price: json,
+                Size: size,
+                Weight: weight,
+                Quantity: quantity,
+                Color: color,
+                Url: imageUrl,
+                status: 'รอการยืนยัน',
+                OrderDate: date,
+                id: ID
             })
+                .then(docRef => {
+                    // documentID =  docRef.id
+                    console.log("add success~")
+                    window.location.href = "/Finish"
+                })
+
+        }
+
     }
+
     function onChangeName(e) {
         console.log(e.target.value);
         setName(e.target.value)
@@ -108,6 +154,22 @@ const A4 = props => {
     function onChangeDescription(e) {
         setDescription(e.target.value)
     }
+    //เดี๋ยวมาทำต่อ
+    // function validateToNextPasswordTapBar (rule, value, callback)  {
+    //     const { form } = this.props;
+    //     if (value && this.state.confirmDirty) {
+    //       form.validateFields(['confirmTapBar'], { force: true });
+    //     }
+    //     if (form.getFieldValue('passwordTapBar').length < 6) {
+    //       callback('กรุณากรอกรหัสที่มีอย่างน้อย 6 ตัวอักษร');
+    //       checkPassword = 0;
+    //     }
+    //     else if (form.getFieldValue('passwordTapBar').length >= 6) {
+    //       checkPassword = 1;
+    //     }
+
+    //     callback();
+    //   };
 
 
     // อย่าลืม check ถ้ามันไม่ส่งค่าอะไรมาเลย 
@@ -116,11 +178,9 @@ const A4 = props => {
         console.log('Received values of form: ', e);
         console.log("image", image);
         if (image == null) {
-            message.error("กรุณาอัพโหลดไฟล์")
+            message.error("กรุณา Upload ไฟล์")
         }
-        if (weight == 0) {
-            message.error("กรุณาเลือก paper weight")
-        } else {
+        else {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             uploadTask.on('state_changed',
                 async (snapshot) => {
@@ -169,7 +229,7 @@ const A4 = props => {
                             </Select></Col>
                         <Col><div id="setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight} placeholder="Paper weight">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight} placeholder="Paper weight - 70 GSM">
                                 <Option value="70">70 GSM</Option>
                                 <Option value="80">80 GSM</Option>
                                 <Option value="110">110 GSM</Option>
@@ -205,13 +265,13 @@ const A4 = props => {
 
                 </Col>
             </Row>
-            <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
-                >
+            <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Create Order"
+            >
                 <h1 className="setTitleModal">Order Summary</h1>
                 <p className="setTitleTextModal">Details </p>
                 <p className="setTextModal">Type: A4 </p>
                 <p className="setTextModal">Size: {size} </p>
-                <p className="setTextModal">Paper weight: {weight} </p>
+                <p className="setTextModal">Paper weight: {weight} GSM</p>
                 <p className="setTextModal">Required Quantity: {quantity} </p>
                 <p className="setTextModal">Black or Colors: {color} </p>
                 <p className="setPrice"> Total:    {json}   Baht.</p>
@@ -228,12 +288,12 @@ const A4 = props => {
                             textAlign: 'right',
                         }}
                     >
-                        <Button onClick={onCloseDrawer} style={{ marginRight: 8 }}>
+                        {/* <Button onClick={onCloseDrawer} style={{ marginRight: 8 }}>
                             Cancel
               </Button>
                         <Button onClick={onSubmitDrawer} type="primary">
                             Submit
-              </Button>
+              </Button> */}
                     </div>
                 }
             >
@@ -243,9 +303,16 @@ const A4 = props => {
                             <Form.Item
                                 name="name"
                                 label="Name"
-                                rules={[{ required: true, message: 'Please enter user name' }]}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'กรุณากรอกชื่อ',
+                                        whitespace: true,
+                                    },
+                                 
+                                ]}
                             >
-                                <Input placeholder="Please enter user name" onChange={onChangeName} />
+                                <Input placeholder="Please enter name" onChange={onChangeName} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -256,11 +323,20 @@ const A4 = props => {
                         <Col span={12}>
                             <Form.Item
                                 name="phone"
-                                label="phone"
-                                rules={[{ required: true, message: 'Please select user phone' }]}
+                                label="Phone"
+                                rules={[
+                                    // {
+                                    //     required: true,
+                                    //     message: 'Please input Phone Number!',
+                                    //     whitespace: true,
+                                    // },
+                                    {
+                                        validator: (_, value) =>
+                                        phonenumber(value) ? Promise.resolve() : Promise.reject(new Error('กรุณากรอกเบอร์โทรให้ถูกต้อง'))
+                                      },
+                                ]}
                             >
-                                <Input placeholder="Please select user phone" onChange={onChangePhone} />
-
+                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please enter phone number" />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -269,14 +345,17 @@ const A4 = props => {
                             <Form.Item
                                 name="description"
                                 label="Description"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'please enter description',
-                                    },
-                                ]}
+                             
                             >
                                 <Input.TextArea rows={4} placeholder="please enter description" onChange={onChangeDescription} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label=" " colon={false}>
+                                <Button style={{ marginTop: "1", marginLeft: 500 }} htmlType="submit" onClick={onSubmitDrawer}>
+                                    Submit</Button>
                             </Form.Item>
                         </Col>
                     </Row>
