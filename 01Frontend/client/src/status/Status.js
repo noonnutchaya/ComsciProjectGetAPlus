@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Layout, Menu, Breadcrumb, Row, Col, Select, InputNumber, Upload, message, Button, Radio, Modal, Input, Form, Drawer } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { Layout, Row, Col, message, Button, Input, Table, Tag, Space } from 'antd';
 import 'antd/dist/antd.css';
 import NavbarHead from '../page/NavbarHead'
 import { storage } from '../firebase';
@@ -14,12 +14,15 @@ const onNumberOnlyChange = (event) => {
         return;
     }
 };
+
 const Status = props => {
     const { Header, Content, Footer } = Layout;
     const [phone, setPhone] = useState('')
     const [phoneError, setPhoneError] = useState('')
     const [statusPhone, setStatusPhone] = useState(false)
     const [allData, setAllData] = useState([])
+    let tempWholeData =[]
+
     function phonenumber(e) {
         let inputtxt = e.target.value
         var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -46,30 +49,30 @@ const Status = props => {
         else {
             console.log(phone)
             //หาใน db 
-
             let wholedata = []
-            await db.collection("Order").where("Phone", "==", phone).get()
-                .then((res) => {
-                    res.forEach(doc => {
-                        var temp = [];
-                        temp.push(doc.id)
-                        temp.push(doc.data())
-                        wholedata.push(temp)
-                        // console.log("doc", temp)
-                        console.log("doc", doc.data())
-
-                    });
-                    
+            await db.collection("Order").where("Phone", "==", phone).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    var temp = [];
+                    temp.push(doc.id)
+                    temp.push(doc.data())
+                    wholedata.push(temp)
+                    console.log("doc", doc.data());
 
                 });
-            setAllData(await wholedata)
-            console.log(allData)
-            setPhone('')  //setค่าให้เท่าเดิม จะได้ค้นหาได้ใหม่
-
-
+            })
+            
+            setAllData()
+           
         }
-    }
 
+    }
+    // useEffect(() => {
+    //     setAllData(tempWholeData)
+    // });
+
+    const columns = [
+        { title: 'Name', dataIndex: 'Name', key: '0' },
+        { title: 'Phone', dataIndex: 'phone', key: '1' }]
     return (
         <div>
             <Layout >
@@ -79,7 +82,11 @@ const Status = props => {
                     <Col>  <Button key="buy" onClick={onSearch}>Search</Button></Col>
                 </Row>
                 <Row>
-                    <Col>
+                    <Col id="dataTable">
+                        <Table
+                            columns={columns}
+                            dataSource={allData}
+                        />
                     </Col>
                 </Row>
 

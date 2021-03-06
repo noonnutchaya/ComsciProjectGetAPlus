@@ -12,11 +12,6 @@ import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Option } = Select;
 const db = firebase.firestore();
 const { Header, Content, Footer } = Layout;
-function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-}
 
 const onNumberOnlyChange = (event) => {
     const keyCode = event.keyCode || event.which;
@@ -29,7 +24,6 @@ const onNumberOnlyChange = (event) => {
 };
 
 const Poster = props => {
-    // const [count, setCount] = useState(0)
     const [size, setSize] = useState('A4')
     const [weight, setWeight] = useState('80') // paper
     const [quantity, setQuantity] = useState(1)
@@ -50,13 +44,11 @@ const Poster = props => {
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [description, setDescription] = useState('')
-    //
-    // checkphone
-    const [phoneCheck, setPhoneCheck] = useState('')
-    const [phoneError, setPhoneError] = useState('')
+    const [email, setEmail] = useState('')
 
-
-
+    function onChangeEmail(e) {
+        setEmail(e.target.value)
+    }
     function handleChangeSize(value) {
         setSize(value)
         console.log(`selected ${value}`);
@@ -77,10 +69,9 @@ const Poster = props => {
             return true;
         }
         else {
-            // callback('กรุณายืนยันรหัสผ่านให้ถูกต้อง');
             return false;
         }
-        // callback();
+   
     }
     const img = {
         name: 'file',
@@ -106,16 +97,19 @@ const Poster = props => {
         setIsModalVisible(false);
     };
     function onCloseDrawer() {
+        console.log(isDrawerVisible)
         setIsDrawerVisible(false)
     }
     function onSubmitDrawer() {
         if (name == '') {
             message.error("กรุณากรอกชื่อ")
+        }if (email == '') {
+            message.error("กรุณากรอก email")
         }
         if (phone == '') {
             message.error("กรุณากรอกเบอร์โทร")
         }
-        if (name != '' && phone != '') {
+        if (name != '' && phone != '' && email != '') {
             var ID = Math.floor(Date.now() / 1000);
             // let documentID;
             const date = firebase.firestore.Timestamp.fromDate(new Date());
@@ -129,19 +123,19 @@ const Poster = props => {
                 Quantity: quantity,
                 Color: color,
                 Url: imageUrl,
-                status: 'รอการยืนยัน',
+                Email: email,
+                WorkStatus: 'รอการยืนยัน',
                 OrderDate: date,
-                id: ID
+                OrderNumber: ID,
+                IdDoc: ""
+            }).then(docRef => {
+                // documentID =  docRef.id
+                console.log("add success~")
+                window.location.href = "/Finish"
             })
-                .then(docRef => {
-                    // documentID =  docRef.id
-                    console.log("add success~")
-                    window.location.href = "/Finish"
-                })
-
         }
-
     }
+
     function onChangeName(e) {
         console.log(e.target.value);
         setName(e.target.value)
@@ -162,9 +156,7 @@ const Poster = props => {
         if (image == null) {
             message.error("กรุณา Upload ไฟล์")
         }
-        if (weight == 0) {
-            message.error("กรุณาเลือก paper weight")
-        } else {
+        else {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             uploadTask.on('state_changed',
                 async (snapshot) => {
@@ -261,23 +253,14 @@ const Poster = props => {
                 <p className="setTextModal">Black or Colors: {color} </p>
                 <p className="setPrice"> Total:    {json}   Baht.</p>
             </Modal>
-
             <Drawer
                 title="Create Order"
-                width={720}
+                width={500}
                 visible={isDrawerVisible}
-                bodyStyle={{ paddingBottom: 80 }}
-                footer={
-                    <div
-                        style={{
-                            textAlign: 'right',
-                        }}
-                    >
-                
-                    </div>
-                }
+                bodyStyle={{ paddingBottom: 50 }}
+ 
             >
-                <Form layout="vertical" hideRequiredMark>
+                <Form layout="vertical" hideRequiredMark style={{ margin: "center" }}>
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item
@@ -292,11 +275,31 @@ const Poster = props => {
 
                                 ]}
                             >
-                                <Input placeholder="Please enter name" onChange={onChangeName} />
+                                <Input placeholder="Please Enter Name" onChange={onChangeName} style={{ width: "400px" }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
 
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name={['email']}
+                                label="Email"
+                                rules={[
+                                    {
+                                        type: 'email',
+                                    },
+                                    {
+                                        required: true,
+                                        message: 'กรุณากรอก email',
+                                        whitespace: true,
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="Please Enter Email" onChange={onChangeEmail} style={{ width: "400px" }} />
+                            </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
@@ -308,15 +311,16 @@ const Poster = props => {
                                     // {
                                     //     required: true,
                                     //     message: 'Please input Phone Number!',
-                                    //     whitespace: true,
+                                    //     // whitespace: true,
                                     // },
                                     {
                                         validator: (_, value) =>
                                             phonenumber(value) ? Promise.resolve() : Promise.reject(new Error('กรุณากรอกเบอร์โทรให้ถูกต้อง'))
+                                            
                                     },
                                 ]}
                             >
-                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please enter phone number" onChange={onChangePhone} />
+                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please Enter Phone Number" onChange={onChangePhone} style={{ width: "400px" }} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -327,14 +331,20 @@ const Poster = props => {
                                 label="Description"
 
                             >
-                                <Input.TextArea rows={4} placeholder="please enter description" onChange={onChangeDescription} />
+                                <Input.TextArea rows={4} placeholder="please Enter Description" onChange={onChangeDescription} style={{ width: "400px" }} />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col >
                             <Form.Item label=" " colon={false}>
-                                <Button style={{ marginTop: "1", marginLeft: 500 }} htmlType="submit" onClick={onSubmitDrawer}>
+                                <Button style={{ marginLeft: 225 }}  onClick={onCloseDrawer}>
+                                    Cancel</Button>
+                            </Form.Item>
+                        </Col>
+                        <Col >
+                            <Form.Item label=" " colon={false}>
+                                <Button type="primary"  style={{ marginLeft:5}} htmlType="submit" onClick={onSubmitDrawer}>
                                     Submit</Button>
                             </Form.Item>
                         </Col>

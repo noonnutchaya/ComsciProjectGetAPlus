@@ -10,12 +10,6 @@ import firebase from '../firebase'
 const { Option } = Select;
 const db = firebase.firestore();
 const { Header, Content, Footer } = Layout;
-function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-}
-
 const onNumberOnlyChange = (event) => {
     const keyCode = event.keyCode || event.which;
     const keyValue = String.fromCharCode(keyCode);
@@ -34,6 +28,7 @@ const A4 = props => {
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
 
+
     //img
     const [image, setImage] = useState(null)
     const [status, setStatus] = useState("รอการตรวจสอบ")
@@ -48,9 +43,8 @@ const A4 = props => {
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [description, setDescription] = useState('')
-    // checkphone
-    const [phoneCheck, setPhoneCheck] = useState('')
-    const [phoneError, setPhoneError] = useState('')
+    const [email, setEmail] = useState('')
+ 
 
 
 
@@ -67,33 +61,6 @@ const A4 = props => {
         setQuantity(value)
         console.log(`selected ${value}`);
     }
-    function phonenumber( e) {
-        console.log(e)
-        let inputtxt = e
-        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        if (inputtxt.match(phoneno)) {
-            return true;
-        }
-        else {
-            // callback('กรุณายืนยันรหัสผ่านให้ถูกต้อง');
-            return false;
-        }
-        // callback();
-    }
-
-
-
-    const img = {
-        name: 'file',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(e) {
-            // console.log(e.file, e.fileList);
-            const image = e.file.originFileObj;
-            setImage(image)
-        }
-    };
     function handleChangeColor(e) {
         setColor(e.target.value)
         console.log(e.target.value);
@@ -109,14 +76,55 @@ const A4 = props => {
     function onCloseDrawer() {
         setIsDrawerVisible(false)
     }
+    function onChangeName(e) {
+        console.log(e.target.value);
+        setName(e.target.value)
+    }
+    function onChangePhone(e) {
+        setPhone(e.target.value)
+    }
+    function onChangeEmail(e) {
+        setEmail(e.target.value)
+    }
+    function onChangeDescription(e) {
+        setDescription(e.target.value)
+    }
+
+    function phonenumber(e) {
+        console.log(e)
+        let inputtxt = e
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            // callback('กรุณายืนยันรหัสผ่านให้ถูกต้อง');
+            return false;
+        }
+        // callback();
+    }
+    const img = {
+        name: 'file',
+        headers: {
+            authorization: 'authorization-text',
+        },
+        onChange(e) {
+            // console.log(e.file, e.fileList);
+            const image = e.file.originFileObj;
+            setImage(image)
+        }
+    };
+  
     function onSubmitDrawer() {
         if (name == '') {
             message.error("กรุณากรอกชื่อ")
+        }if (email == '') {
+            message.error("กรุณากรอก email")
         }
         if (phone == '') {
             message.error("กรุณากรอกเบอร์โทร")
         }
-        if (name != '' && phone != '') {
+        if (name != '' && phone != '' && email != '') {
             var ID = Math.floor(Date.now() / 1000);
             // let documentID;
             const date = firebase.firestore.Timestamp.fromDate(new Date());
@@ -130,9 +138,11 @@ const A4 = props => {
                 Quantity: quantity,
                 Color: color,
                 Url: imageUrl,
-                status: 'รอการยืนยัน',
+                Email: email,
+                WorkStatus: 'รอการยืนยัน',
                 OrderDate: date,
-                id: ID
+                OrderNumber: ID,
+                IdDoc: ""
             }).then(docRef => {
                 // documentID =  docRef.id
                 console.log("add success~")
@@ -143,33 +153,7 @@ const A4 = props => {
 
     }
 
-    function onChangeName(e) {
-        console.log(e.target.value);
-        setName(e.target.value)
-    }
-    function onChangePhone(e) {
-        setPhone(e.target.value)
-    }
-    function onChangeDescription(e) {
-        setDescription(e.target.value)
-    }
-    //เดี๋ยวมาทำต่อ
-    // function validateToNextPasswordTapBar (rule, value, callback)  {
-    //     const { form } = this.props;
-    //     if (value && this.state.confirmDirty) {
-    //       form.validateFields(['confirmTapBar'], { force: true });
-    //     }
-    //     if (form.getFieldValue('passwordTapBar').length < 6) {
-    //       callback('กรุณากรอกรหัสที่มีอย่างน้อย 6 ตัวอักษร');
-    //       checkPassword = 0;
-    //     }
-    //     else if (form.getFieldValue('passwordTapBar').length >= 6) {
-    //       checkPassword = 1;
-    //     }
-
-    //     callback();
-    //   };
-
+    
 
     // อย่าลืม check ถ้ามันไม่ส่งค่าอะไรมาเลย 
     function handleSubmit(e) {
@@ -275,28 +259,14 @@ const A4 = props => {
                 <p className="setTextModal">Black or Colors: {color} </p>
                 <p className="setPrice"> Total:    {json}   Baht.</p>
             </Modal>
-
             <Drawer
                 title="Create Order"
-                width={720}
+                width={500}
                 visible={isDrawerVisible}
-                bodyStyle={{ paddingBottom: 80 }}
-                footer={
-                    <div
-                        style={{
-                            textAlign: 'right',
-                        }}
-                    >
-                        {/* <Button onClick={onCloseDrawer} style={{ marginRight: 8 }}>
-                            Cancel
-              </Button>
-                        <Button onClick={onSubmitDrawer} type="primary">
-                            Submit
-              </Button> */}
-                    </div>
-                }
+                bodyStyle={{ paddingBottom: 50 }}
+ 
             >
-                <Form layout="vertical" hideRequiredMark>
+                <Form layout="vertical" hideRequiredMark style={{ margin: "center" }}>
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item
@@ -308,14 +278,34 @@ const A4 = props => {
                                         message: 'กรุณากรอกชื่อ',
                                         whitespace: true,
                                     },
-                                 
+
                                 ]}
                             >
-                                <Input placeholder="Please enter name" onChange={onChangeName} />
+                                <Input placeholder="Please Enter Name" onChange={onChangeName} style={{ width: "400px" }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
 
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name={['email']}
+                                label="Email"
+                                rules={[
+                                    {
+                                        type: 'email',
+                                    },
+                                    {
+                                        required: true,
+                                        message: 'กรุณากรอก email',
+                                        whitespace: true,
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="Please Enter Email" onChange={onChangeEmail} style={{ width: "400px" }} />
+                            </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
@@ -327,15 +317,16 @@ const A4 = props => {
                                     // {
                                     //     required: true,
                                     //     message: 'Please input Phone Number!',
-                                    //     whitespace: true,
+                                    //     // whitespace: true,
                                     // },
                                     {
                                         validator: (_, value) =>
-                                        phonenumber(value) ? Promise.resolve() : Promise.reject(new Error('กรุณากรอกเบอร์โทรให้ถูกต้อง'))
-                                      },
+                                            phonenumber(value) ? Promise.resolve() : Promise.reject(new Error('กรุณากรอกเบอร์โทรให้ถูกต้อง'))
+                                            
+                                    },
                                 ]}
                             >
-                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please enter phone number" onChange={onChangePhone} />
+                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please Enter Phone Number" onChange={onChangePhone} style={{ width: "400px" }} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -344,16 +335,22 @@ const A4 = props => {
                             <Form.Item
                                 name="description"
                                 label="Description"
-                             
+
                             >
-                                <Input.TextArea rows={4} placeholder="please enter description" onChange={onChangeDescription} />
+                                <Input.TextArea rows={4} placeholder="please Enter Description" onChange={onChangeDescription} style={{ width: "400px" }} />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col >
                             <Form.Item label=" " colon={false}>
-                                <Button style={{ marginTop: "1", marginLeft: 500 }} htmlType="submit" onClick={onSubmitDrawer}>
+                                <Button style={{ marginLeft: 225 }}  onClick={onCloseDrawer}>
+                                    Cancel</Button>
+                            </Form.Item>
+                        </Col>
+                        <Col >
+                            <Form.Item label=" " colon={false}>
+                                <Button type="primary"  style={{ marginLeft:5}} htmlType="submit" onClick={onSubmitDrawer}>
                                     Submit</Button>
                             </Form.Item>
                         </Col>
