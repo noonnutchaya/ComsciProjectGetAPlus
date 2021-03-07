@@ -12,6 +12,7 @@ import Flayer from './type/Flayer'
 import FourPages from './type/FourPages'
 import Order from './Order/Order'
 import Finish from './Finish/Finish'
+import Status from './status/Status'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Route path='/flayer' component={Flayer}/>
       <Route path='/4pages' component={FourPages}/>
       <Route path='/Finish' component={Finish}/>
+      <Route path='/Status' component={Status}/>
      </Switch>
   </Router>
   );

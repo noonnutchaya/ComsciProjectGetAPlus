@@ -8,20 +8,22 @@ import { UploadOutlined } from '@ant-design/icons';
 import { storage } from '../firebase';
 import firebase from '../firebase'
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
-
 const { Option } = Select;
 const db = firebase.firestore();
-const { Header, Content, Footer } = Layout;
-function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-}
-
+const { Footer } = Layout;
+const onNumberOnlyChange = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const isValid = new RegExp("[0-9]").test(keyValue);
+    if (!isValid) {
+        event.preventDefault();
+        return;
+    }
+};
 const FourPages = props => {
     // const [count, setCount] = useState(0)
     const [size, setSize] = useState('A4')
-    const [weight, setWeight] = useState(0) // paper
+    const [weight, setWeight] = useState(70) // paper
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
@@ -39,6 +41,7 @@ const FourPages = props => {
     const [name,setName] = useState('')
     const [phone,setPhone] = useState('')
     const [description,setDescription] = useState('')
+    const [email, setEmail] = useState('')
 
 
     function handleChangeSize(value) {
@@ -53,13 +56,26 @@ const FourPages = props => {
         setQuantity(value)
         console.log(`selected ${value}`);
     }
+    function phonenumber(e) {
+        console.log(e)
+        let inputtxt = e
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (inputtxt.match(phoneno)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    function onChangeEmail(e) {
+        setEmail(e.target.value)
+    }
     const img = {
         name: 'file',
         headers: {
             authorization: 'authorization-text',
         },
         onChange(e) {
-            // console.log(e.file, e.fileList);
             const image = e.file.originFileObj;
             setImage(image)
         }
@@ -70,7 +86,7 @@ const FourPages = props => {
     }
     function handleOk() {
         setIsModalVisible(false);
-        // setIsDrawerVisible(true)
+        setIsDrawerVisible(true)
     };
 
     function handleCancel() {
@@ -79,26 +95,44 @@ const FourPages = props => {
     function onCloseDrawer(){
         setIsDrawerVisible(false)
     }
-    function onSubmitDrawer(){
-        console.log(name);
-        console.log(phone);
-        console.log(description);
-        db.collection('Order').add({
-            Name: name,
-            Phone:phone,
-            Description:description,
-            Price:json,
-            Size:size,
-            Weight: weight,
-            Quantity: quantity,
-            Color: color,
-            Url: imageUrl
-        }) 
-        .then(docRef => {
-            console.log("add success~") 
-            window.location.href = "/Finish"
-        })  
+    function onSubmitDrawer() {
+        if (name == '') {
+            message.error("กรุณากรอกชื่อ")
+        }if (email == '') {
+            message.error("กรุณากรอก email")
+        }
+        if (phone == '') {
+            message.error("กรุณากรอกเบอร์โทร")
+        }
+        if (name != '' && phone != '' && email != '') {
+            var ID = Math.floor(Date.now() / 1000);
+            // let documentID;
+            const date = firebase.firestore.Timestamp.fromDate(new Date());
+            db.collection('Order').add({
+                Name: name,
+                Phone: phone,
+                Description: description,
+                Price: json,
+                Size: size,
+                Weight: weight,
+                Quantity: quantity,
+                Color: color,
+                Url: imageUrl,
+                Email: email,
+                WorkStatus: 'รอการยืนยัน',
+                OrderDate: date,
+                OrderNumber: ID,
+                IdDoc: ""
+            }).then(docRef => {
+                // documentID =  docRef.id
+                console.log("add success~")
+                window.location.href = "/Finish"
+            })
+
+        }
+
     }
+
     function onChangeName(e){
         console.log(e.target.value);
         setName(e.target.value)
@@ -119,9 +153,7 @@ const FourPages = props => {
         if (image == null) {
             message.error("กรุณาอัพโหลดไฟล์")
         } 
-        if (weight == 0) {
-            message.error("กรุณาเลือก paper weight")
-        }else {
+       else {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             uploadTask.on('state_changed',
                 async (snapshot) => {
@@ -165,13 +197,13 @@ const FourPages = props => {
                     <Row>
                         <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="A4">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE - A4">
                                 <Option value="A4">A4</Option>
                                
                             </Select></Col>
                         <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
-                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Paper weight">
+                            <Select size={'large'} style={{ width: 300 }} onChange={handleChangeWeight}  placeholder="Paper weight - 70 GSM">
                             <Option value="70">70 GSM</Option>
                                 <Option value="80">80 GSM</Option>
                                 <Option value="110">110 GSM</Option>
@@ -213,76 +245,109 @@ const FourPages = props => {
                 <p className="setTitleTextModal">Details </p>
                 <p className="setTextModal">Type: 4 Pages </p>
                 <p className="setTextModal">Size: {size} </p>
-                <p className="setTextModal">Paper weight: {weight} </p>
+                <p className="setTextModal">Paper weight: {weight} GSM</p>
                 <p className="setTextModal">Required Quantity: {quantity} </p>
                 <p className="setTextModal">Black or Colors: {color} </p>
                 <p className="setPrice"> Total:    {json}   Baht.</p>
             </Modal>
             <Drawer
-          title="Create a new account"
-          width={720}
-          visible={isDrawerVisible}
-          bodyStyle={{ paddingBottom: 80 }}
-          footer={
-            <div
-              style={{
-                textAlign: 'right',
-              }}
+                title="Create Order"
+                width={500}
+                visible={isDrawerVisible}
+                bodyStyle={{ paddingBottom: 50 }}
+ 
             >
-              <Button onClick={onCloseDrawer} style={{ marginRight: 8 }}>
-                Cancel
-              </Button>
-              <Button onClick={onSubmitDrawer} type="primary">
-                Submit
-              </Button>
-            </div>
-          }
-        >
-          <Form layout="vertical" hideRequiredMark>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="name"
-                  label="Name"
-                  rules={[{ required: true, message: 'Please enter user name' }]}
-                >
-                  <Input placeholder="Please enter user name" onChange={onChangeName}/>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-               
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="phone"
-                  label="Phone"
-                  rules={[{ required: true, message: 'Please select an owner' }]}
-                >
-                    <Input placeholder="Please enter user name" onChange={onChangePhone}/>
-                
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name="description"
-                  label="Description"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please enter url description',
-                    },
-                  ]}
-                >
-                  <Input.TextArea rows={4} placeholder="please enter url description"  onChange={onChangeDescription}/>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </Drawer>
+                <Form layout="vertical" hideRequiredMark style={{ margin: "center" }}>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="name"
+                                label="Name"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'กรุณากรอกชื่อ',
+                                        whitespace: true,
+                                    },
+
+                                ]}
+                            >
+                                <Input placeholder="Please Enter Name" onChange={onChangeName} style={{ width: "400px" }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name={['email']}
+                                label="Email"
+                                rules={[
+                                    {
+                                        type: 'email',
+                                    },
+                                    {
+                                        required: true,
+                                        message: 'กรุณากรอก email',
+                                        whitespace: true,
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="Please Enter Email" onChange={onChangeEmail} style={{ width: "400px" }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="phone"
+                                label="Phone"
+                                rules={[
+                                    // {
+                                    //     required: true,
+                                    //     message: 'Please input Phone Number!',
+                                    //     // whitespace: true,
+                                    // },
+                                    {
+                                        validator: (_, value) =>
+                                            phonenumber(value) ? Promise.resolve() : Promise.reject(new Error('กรุณากรอกเบอร์โทรให้ถูกต้อง'))
+                                            
+                                    },
+                                ]}
+                            >
+                                <Input type="text" onKeyPress={onNumberOnlyChange} placeholder="Please Enter Phone Number" onChange={onChangePhone} style={{ width: "400px" }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item
+                                name="description"
+                                label="Description"
+
+                            >
+                                <Input.TextArea rows={4} placeholder="please Enter Description" onChange={onChangeDescription} style={{ width: "400px" }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col >
+                            <Form.Item label=" " colon={false}>
+                                <Button style={{ marginLeft: 225 }}  onClick={onCloseDrawer}>
+                                    Cancel</Button>
+                            </Form.Item>
+                        </Col>
+                        <Col >
+                            <Form.Item label=" " colon={false}>
+                                <Button type="primary"  style={{ marginLeft:5}} htmlType="submit" onClick={onSubmitDrawer}>
+                                    Submit</Button>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+            </Drawer>
             <Footer style={{ backgroundColor: '#fcfcbc', bottom: 0, marginBottom: 0, position: 'fixed', width: '3000px' }}></Footer>
         </div>
 
