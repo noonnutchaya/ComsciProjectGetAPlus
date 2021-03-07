@@ -1,43 +1,82 @@
 #LogoNavbar {
-    width: 25%;
-    height: 35%;
-    margin-top: 2%;
-    margin-left: 3%;
-    margin-bottom: 2.5%;
+  width: 25%;
+  height: 35%;
+  margin-top: 2%;
+  margin-left: 3%;
+  margin-bottom: 2.5%;
 }
 
 #footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 4%;
-    background-color: #fcfcbc;
-    color: #fcfcbc;
-    text-align: left;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4%;
+  background-color: #fcfcbc;
+  color: #fcfcbc;
+  text-align: left;
 }
 
 #setCenterTitle {
-    text-align: center;
-    margin-top: 4%;
-    margin-bottom: 6.5%;
-    font-size: 230%;
-    font-weight: 850;
-    letter-spacing: 10px;
-    color: #292929;
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 6.5%;
+  font-size: 230%;
+  font-weight: 850;
+  letter-spacing: 10px;
+  color: #292929;
 }
 
 #buttonFile {
-    background-color: #808B96;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 6px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  
+  background-color: #808b96;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 6px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#buttonFile:hover {
+  background-color: #5d6d7e;
+}
+
+#buttonAccept {
+  background-color: #58d68d;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 6px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#buttonAccept:hover {
+  background-color: #27AE60; 
+}
+
+#buttonReject {
+  background-color: #ec7063;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 6px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#buttonReject:hover {
+  background-color:  #C0392B  ;
+}

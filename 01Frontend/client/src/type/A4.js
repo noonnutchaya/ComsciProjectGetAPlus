@@ -209,7 +209,7 @@ const A4 = props => {
                 <p>{json}</p>
             </Modal>
             <Drawer
-          title="Create a new account"
+          title="Order"
           width={720}
           visible={isDrawerVisible}
           bodyStyle={{ paddingBottom: 80 }}

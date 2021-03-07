@@ -7,7 +7,7 @@ const db = firebase.firestore();
 // const orderRef = db.collection("FormatOrder");
 const orderRef = db.collection("Order");
 
-class TableOrder extends Component {
+class TableRejectOrder extends Component {
   constructor() {
     super();
     this.state = {
@@ -19,8 +19,7 @@ class TableOrder extends Component {
     var dataList = [];
     orderRef.orderBy("OrderDate", "desc").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            orderRef.doc(doc.id).update ({IdDoc: doc.id})
-            if (doc.data().WorkStatus == "รอการยืนยัน") {
+            if (doc.data().WorkStatus == "ไม่รับดำเนินการ") {
                 dataList.push(doc.data());
                 this.setState({ data: dataList });
             }
@@ -38,8 +37,7 @@ class TableOrder extends Component {
         <th> จำนวน </th>
         <th> ราคา </th>
         <th> ไฟล์งาน </th>
-        <th> รับงาน </th>
-        <th> ไม่รับงาน </th>
+        <th>  </th>
         
       </tr>
     );
@@ -59,36 +57,7 @@ class TableOrder extends Component {
             <td>{Quantity} ชุด</td>
             <td>{Price} บาท</td>
             <td><button type="button" id="buttonFile" onClick={e => { window.open(Url, "_blank");}}> {" "} File </button></td>
-            <td><button type="button" id="buttonAccept" onClick={async e => { 
-              window.location.reload(false);
-              // orderRef.doc(IdDoc).update ({WorkStatus: "ยืนยันการทำงาน"});
-                console.log("Accept");
-                const payload = { Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email}
-                    const res = await fetch('http://localhost:9000/mail', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-                window.location.reload(false);}}> {" "} ✔	 </button>
-            </td>
-            <td><button type="button" id="buttonReject" onClick={async e => { 
-              window.location.reload(false);
-              orderRef.doc(IdDoc).update ({WorkStatus: "ไม่รับดำเนินการ"});
-              console.log("Reject");
-              const payload = { Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email}
-              const res = await fetch('http://localhost:9000/rejectMail', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-              window.location.reload(false);}}> {" "} ✖ </button>
-            </td>
+            <td><button type="button" id="buttonReject" > {" "} ✖ </button></td>
         </tr>
       );
     });
@@ -109,4 +78,4 @@ class TableOrder extends Component {
   }
 }
 
-export default TableOrder;
+export default TableRejectOrder;

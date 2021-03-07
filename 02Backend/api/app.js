@@ -11,6 +11,9 @@ var cardRouter = require("./routes/calCard");
 var envelopRouter = require("./routes/calEnvelope");
 var flyerRouter = require("./routes/calFlyer");
 var posterRouter = require("./routes/calPoster");
+var apiRouter = require("./routes/generatePaymentQrcode");
+var mailRouter = require("./routes/responseEmail");
+var rejectMailRouter = require("./routes/rejectEmail");
 
 var app = express();
 
@@ -32,6 +35,9 @@ app.use("/calCard", cardRouter);
 app.use("/calEnvelope", envelopRouter);
 app.use("/calFlyer", flyerRouter);
 app.use("/calPoster", posterRouter);
+app.use("/api", apiRouter);
+app.use("/mail", mailRouter);
+app.use("/rejectMail", rejectMailRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
