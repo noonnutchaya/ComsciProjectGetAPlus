@@ -70,7 +70,7 @@ const Envelope = props => {
     }
     function handleOk() {
         setIsModalVisible(false);
-        setIsDrawerVisible(true)
+        // setIsDrawerVisible(true)
     };
 
     function handleCancel() {
@@ -194,8 +194,14 @@ const Envelope = props => {
                     
                 </Col>
             </Row>
-            <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} >
-                <p>{json}</p>
+            <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  okText="Create Order"
+                >
+                <h1 className="setTitleModal">Order Summary</h1>
+                <p className="setTitleTextModal">Details </p>
+                <p className="setTextModal">Type: Envelope </p>
+                <p className="setTextModal">Size: {size} </p>
+                <p className="setTextModal">Required Quantity: {quantity} </p>
+                <p className="setPrice"> Total:    {json}   Baht.</p>
             </Modal>
             <Drawer
           title="Create a new account"

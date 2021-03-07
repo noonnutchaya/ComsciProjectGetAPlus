@@ -12,13 +12,13 @@ const Homepage = props => {
         <div> 
             <NavbarHead />
             <Row>
-                {/* <Col style={{ marginTop:90 ,marginLeft: 'auto', marginRight:'auto' }}><Welcome /></Col> */}
+                <Col className="setWelcome"><Welcome /></Col>
                 
             </Row>
             <Row >
-                <Col style={{ marginLeft: 'auto', marginRight:'auto' }}><Type/></Col>
+                <Col className="setType"><Type/></Col>
             </Row>
-            <Footer style={{ textAlign: 'center', backgroundColor: '#fcfcbc' }}></Footer>
+            <Footer className="setFooter" style={{ backgroundColor: '#fcfcbc'}}></Footer>
 
         </div>
     )
