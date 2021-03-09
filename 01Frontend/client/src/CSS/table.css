@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css?family=Sarabun");
+
+#title {
+  text-align: center;
+  font-family: arial, sans-serif;
+}
+
+#setTable {
+  text-align: center;
+  font-family: "Sarabun";
+  border-collapse:separate;
+  border: 3px solid #D5D8DC;
+  border-radius:6px;
+  -moz-border-radius:6px;
+  border-spacing: 0px;
+  width: 100%;
+  /* margin-left: -50px; */
+}
+
+#setTable td {
+  padding: 15px;
+}
+
+#setTable th {
+  border: 1px  #D5D8DC;
+  padding: 8px;
+}
+
+#setTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#setTable tr:hover {
+  background-color: #F7F9F9   ;
+}
+
+#setTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color:#D5D8DC;
+  color: rgb(26, 22, 22);
+}
