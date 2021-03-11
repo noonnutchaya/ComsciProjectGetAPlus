@@ -127,7 +127,8 @@ const Poster = props => {
                 WorkStatus: 'รอการยืนยัน',
                 OrderDate: date,
                 OrderNumber: ID,
-                IdDoc: ""
+                IdDoc: "",
+                Type : 'Poster'
             }).then(docRef => {
                 // documentID =  docRef.id
                 console.log("add success~")

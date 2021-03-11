@@ -4,7 +4,9 @@ import 'antd/dist/antd.css';
 import NavbarHead from '../page/NavbarHead'
 import "../CSS/table.css";
 import "../CSS/decoration.css";
+import "../status/status.css";
 import { storage } from '../firebase';
+import { SearchOutlined } from '@ant-design/icons';
 import firebase from '../firebase'
 const db = firebase.firestore();
 const onNumberOnlyChange = (event) => {
@@ -22,10 +24,12 @@ const Status = props => {
     const [phone, setPhone] = useState('')
     const [phoneError, setPhoneError] = useState('')
     const [statusPhone, setStatusPhone] = useState(false)
-    const [lst, setLst] = useState(allData())
-    const [dataSource, setDatasource] = useState([])
+    const [lst, setLst] = useState([])
     const [lstAlldata, setLstAlldata] = useState([])
     let lstSearch = []
+    useEffect(() => {
+        allData()
+    }, [])
     async function allData() {
         let wholedata = []
         await db.collection("Order").get().then((querySnapshot) => {
@@ -34,9 +38,10 @@ const Status = props => {
                 temp.push(doc.id)
                 temp.push(doc.data())
                 wholedata.push(temp)
+
             });
         })
-        return wholedata
+        setLst(wholedata)
     }
     function phonenumber(e) {
         let inputtxt = e.target.value
@@ -55,38 +60,28 @@ const Status = props => {
         if (phoneError != '' && statusPhone == false) {
             message.error("กรุณากรอกเบอร์โทรให้ถูกต้อง")
             setPhone('')
+            setLstAlldata([])
         }
         else if (phone == '' && statusPhone == false) {
             message.error("กรุณากรอกเบอร์โทร")
-            setPhone('')
+            setLstAlldata([])
+
 
         }
         else {
             lstSearch = []
-            lst.then(data => {
-                data.forEach((temp) => {
-                    if (temp[1].Phone == phone) {
-                        console.log(temp[1])
-                        lstSearch.push(temp[1])
+            // console.log('lst',lst);
+            const templst = lst.filter(item => item[1].Phone == phone)
+            if (templst.length == 0) {
+                message.error("ไม่พบข้อมูล")
 
+            }
+            setLstAlldata(templst)
+            // console.log('dd',templst);
 
-                    }
-
-                })
-            }).then(
-                setLstAlldata(lstSearch)
-
-
-            )
-            // const lstTemp = await lstSearch
-            // window.location.reload(false);
-            console.log('search', lstAlldata)
-
-
-
+            setPhone('')
 
         }
-
     }
     function renderTableHeader() {
         return (
@@ -94,59 +89,58 @@ const Status = props => {
                 <th> วัน-เวลาการสั่งงาน </th>
                 <th> เลขรายการ </th>
                 <th> ชื่อ </th>
-                <th> เบอร์โทรศัพท์ </th>
+                <th> E-mail </th>
                 <th> รายละเอียดงาน </th>
                 <th> จำนวน </th>
                 <th> ราคา </th>
-
-
+                <th> สถานะ </th>
             </tr>
         );
     }
-    useEffect(()=>{
-        function renderTableData() {
-            console.log('a', lstAlldata);
-            return lstAlldata.map((order, index) => {
-                const { Name, Type, Phone, Description, Size, Weight, Color, Price, Quantity, Url, OrderDate, IdDoc, Email, OrderNumber } = order; //destructuring
-                console.log('order', order)
-                let tempDate = OrderDate.toDate().toString();
-                let stringArray = tempDate.split(" ");
-                return (
-                    <tr key={Name}>
-                        <td>{stringArray[2]}-{stringArray[1]}-{stringArray[3]}</td>
-                        <td>{OrderNumber}</td>
-                        <td>{Name}</td>
-                        <td>{Phone}</td>
-                        <td>สั่งพิมพ์ {Type} {Color} ขนาด {Size} ({Weight} แกรม) <br /> {Description}</td>
-                        <td>{Quantity} ชุด</td>
-                        <td>{Price} บาท</td>
-                        {/* <td><button type="button" id="buttonFile" onClick={e => { window.open(Url, "_blank");}}> {" "} File </button></td> */}
-    
-                    </tr>
-                );
-            });
-        }
-    },renderTableData)
 
-    
+
     return (
         <div>
-            <Layout >
+            <Layout style={{ backgroundColor: "white" }} >
                 <NavbarHead />
-                <Row>
-                    <Col>  <Input type="text" onKeyPress={onNumberOnlyChange} onChange={phonenumber} /></Col>
-                    <Col>  <Button key="buy" onClick={onSearch}>Search</Button></Col>
+                <Row  className="setPosition">
+                    <Col > 
+                        <div id="setCenterTitle" >Status</div>
+                   </Col>
                 </Row>
-                <Row>
+                <Row className="setPosition" >
+
+                    <Col >  <Input type="text" size={'large'} onKeyPress={onNumberOnlyChange} onChange={phonenumber} placeholder="Phone Number" style={{ width: 200 }} /></Col>
+                    <Col>   <Button type="primary" icon={<SearchOutlined />} size={'large'} onClick={onSearch} style={{ marginLeft: 20 }}> Search </Button></Col>
+                </Row>
+                <Row className="setPosition" style={{marginTop: "70px" }} >
                     <Col> <table id="setTable">
                         <tbody>
-                            {renderTableHeader()}
-                            {renderTableData()}
+                            {lstAlldata.length !== 0 && renderTableHeader()}
+                            {lstAlldata.map((order, index) => {
+                                const { Name, Type, Phone, Description, Size, Weight, Color, Price, Quantity, Url, OrderDate, IdDoc, Email, OrderNumber, WorkStatus } = order[1]; //destructuring
+                                // console.log('order', order)
+                                let tempDate = OrderDate.toDate().toString();
+                                let stringArray = tempDate.split(" ");
+                                return (
+                                    <tr key={Name}>
+                                        <td>{stringArray[2]}-{stringArray[1]}-{stringArray[3]}</td>
+                                        <td>{OrderNumber}</td>
+                                        <td>{Name}</td>
+                                        <td>{Email}</td>
+
+                                        <td>สั่งพิมพ์ {Type} {Color} ขนาด {Size} ({Weight} แกรม) <br /> {Description}</td>
+                                        <td>{Quantity} ชุด</td>
+                                        <td>{Price} บาท</td>
+                                        <td>{WorkStatus}</td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                     </Col>
                 </Row>
-
+                <Footer style={{ backgroundColor: '#fcfcbc', bottom: 0, marginBottom: 0, position: 'fixed', width: '3000px' }}></Footer>
             </Layout></div>
     )
 }

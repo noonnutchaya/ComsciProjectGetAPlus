@@ -130,7 +130,8 @@ const Card = props => {
                 OrderDate: date,
                 OrderNumber: ID,
                 ColorPaper: colorPaper,
-                IdDoc: ""
+                IdDoc: "",
+                Type : 'Card'
             }).then(docRef => {
                 // documentID =  docRef.id
                 console.log("add success~")

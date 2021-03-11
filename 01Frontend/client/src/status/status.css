@@ -1,0 +1,21 @@
+
+#setCenterTitle {
+    text-align: center;
+    margin-top: 5%;
+    margin-bottom: 6.5%;
+    font-size: 230%;
+    font-weight: 850;
+    letter-spacing:8px;
+    color: #292929;
+    margin-left: auto;
+    margin-right: auto;
+  }
+.container{
+    padding: 2vh 10vw;
+}
+.setPosition{
+    background-color: white;
+     margin-left: auto;
+    margin-right: auto;
+    margin-top:1%;
+}

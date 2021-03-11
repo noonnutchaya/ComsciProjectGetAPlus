@@ -122,7 +122,8 @@ const FourPages = props => {
                 WorkStatus: 'รอการยืนยัน',
                 OrderDate: date,
                 OrderNumber: ID,
-                IdDoc: ""
+                IdDoc: "",
+                Type : 'FourPages'
             }).then(docRef => {
                 // documentID =  docRef.id
                 console.log("add success~")

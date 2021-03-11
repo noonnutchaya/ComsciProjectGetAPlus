@@ -135,7 +135,8 @@ const Flayer = props => {
                 OrderDate: date,
                 OrderNumber: ID,
                 ColorPaper: colorPaper,
-                IdDoc: ""
+                IdDoc: "",
+                Type : 'Flayer'
             }).then(docRef => {
                 // documentID =  docRef.id
                 console.log("add success~")

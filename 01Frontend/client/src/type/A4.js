@@ -27,7 +27,7 @@ const A4 = props => {
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)
-
+    
 
     //img
     const [image, setImage] = useState(null)
@@ -142,7 +142,8 @@ const A4 = props => {
                 WorkStatus: 'รอการยืนยัน',
                 OrderDate: date,
                 OrderNumber: ID,
-                IdDoc: ""
+                IdDoc: "",
+                Type : 'A4'
             }).then(docRef => {
                 // documentID =  docRef.id
                 console.log("add success~")

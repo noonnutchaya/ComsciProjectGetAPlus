@@ -124,7 +124,8 @@ const Envelope = props => {
                 WorkStatus: 'รอการยืนยัน',
                 OrderDate: date,
                 OrderNumber: ID,
-                IdDoc: ""
+                IdDoc: "",
+                Type : 'Envelope'
             }).then(docRef => {
                 // documentID =  docRef.id
                 console.log("add success~")
