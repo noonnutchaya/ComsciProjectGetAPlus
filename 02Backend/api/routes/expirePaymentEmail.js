@@ -4,7 +4,7 @@ var nodemailer = require('nodemailer');
 
 
 router.post('/', function(req, res, next) {
-  const { Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email, OrderNumber} = req.body;
+  const { Name,Phone,Price,Email, OrderNumber} = req.body;
   console.log(req.body);
   console.log(Email);
   
@@ -21,9 +21,9 @@ router.post('/', function(req, res, next) {
       var mailOptions = {
         from: 'nongnoonprinting@gmail.com',
         to: Email,
-        subject: 'เลขรายการ ' + OrderNumber +' ปฏิเสธการสั่งงาน',
-        text: 'สวัสดีค่ะ คุณ' + Name + ' (' + Phone +') ทางร้านขออนุญาตปฏิเสธการสั่งงานนะคะ \n' +
-        'ขออภัยมา ณ ที่นี้ค่ะ \n\nสอบถาม/ติดต่อ 035-321945'
+        subject: 'เลขรายการ ' + OrderNumber +' ยกเลิกรายการ',
+        text: 'สวัสดีค่ะ คุณ' + Name + ' (' + Phone +') ทางร้านขออนุญาตยกเลิกรายการนะคะ\nเนื่องจากเกินระยะเวลาในการชำระ' +
+        '\n\nสอบถาม/ติดต่อ 035-321945'
       };
       
       transporter.sendMail(mailOptions, function(error, info){

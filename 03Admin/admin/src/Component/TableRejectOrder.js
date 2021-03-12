@@ -31,6 +31,7 @@ class TableRejectOrder extends Component {
     return (
       <tr>
         <th> วัน-เวลาการสั่งงาน </th>
+        <th> เลขรายการ </th>
         <th> ชื่อ </th>
         <th> เบอร์โทรศัพท์ </th>
         <th> รายละเอียดงาน </th>
@@ -45,12 +46,13 @@ class TableRejectOrder extends Component {
 
   renderTableData() {
     return this.state.data.map((order, index) => {
-      const {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Url,OrderDate,IdDoc,Email} = order; //destructuring
+      const {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Url,OrderDate,IdDoc,Email, OrderNumber} = order; //destructuring
       let tempDate = OrderDate.toDate().toString();
       let stringArray = tempDate.split(" ");
       return (
         <tr key={Name}>
             <td>{stringArray[2]}-{stringArray[1]}-{stringArray[3]}</td>
+            <td>{OrderNumber}</td>
             <td>{Name}</td>
             <td>{Phone}</td>
             <td>สั่งพิมพ์ {Type} {Color} ขนาด {Size} ({Weight} แกรม) <br/> {Description}</td>

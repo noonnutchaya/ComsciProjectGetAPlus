@@ -13,8 +13,8 @@
   border-radius:6px;
   -moz-border-radius:6px;
   border-spacing: 0px;
-  width: 100%;
-  /* margin-left: -50px; */
+  width: 110%;
+  margin-left: -50px; 
 }
 
 #setTable td {

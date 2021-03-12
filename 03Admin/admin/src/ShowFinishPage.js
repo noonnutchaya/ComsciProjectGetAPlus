@@ -1,13 +1,13 @@
 import React from 'react';
 import firebase from './firebase.js';
 import './CSS/reportOrder.css';
-import OrderList from './Component/TableAcceptOrder';
+import OrderList from './Component/TableFinishOrder';
 import NavbarTab from './Component/NavbarTab';
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 
-class ShowAcceptPage extends React.Component {
+class ShowFinishPage extends React.Component {
 
   constructor(){
     super()
@@ -18,11 +18,11 @@ class ShowAcceptPage extends React.Component {
       <div>
         <NavbarTab/>
         <div className="container">
-          <div id = "setCenterTitle">ACCEPT ORDER LIST</div>
+          <div id = "setCenterTitle">FINISH ORDER LIST</div>
           <OrderList/>
         </div>
       </div>
     );
   }
 }
-export default ShowAcceptPage;
+export default ShowFinishPage;
