@@ -1,0 +1,51 @@
+#setEffectButton {
+    transition: all 0.15s linear 0s;
+    position: relative;
+    display: inline-block;
+    padding: 7px 10px;
+    background-color: #F9C65D;
+    color: #195B52;
+    box-shadow: 6px 6px 0 #195B52;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    border: none;
+    margin-left: 210%;
+    margin-top: 40%;
+   
+  
+  }
+  
+  #setEffectButton:hover {
+    top: 3px;
+    left: 3px;
+    box-shadow: 3px 3px 0 #195B52;
+  }
+  
+  #setEffectButton::after {
+    transition: all 0.15s linear 0s;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: #195B52;
+    transform: rotate(45deg);
+    z-index: -1;
+  }
+  
+  #setEffectButton::before {
+    transition: all 0.15s linear 0s;
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color:  #195B52;
+    transform: rotate(45deg);
+    z-index: -1;
+  }

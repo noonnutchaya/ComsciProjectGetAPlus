@@ -14,7 +14,7 @@ const NavbarHead = props => {
                 <Nav className="justify-content-end" >
                     <Nav.Link href="/">หน้าแรก</Nav.Link>
                     <Nav.Link href="/Status">ตรวจสอบสถานะ</Nav.Link>
-                    <Nav.Link href="/">ติดต่อเรา</Nav.Link>
+                    {/* <Nav.Link href="/">ติดต่อเรา</Nav.Link> */}
                 </Nav>
             </Navbar>
         </div>

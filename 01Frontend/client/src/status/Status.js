@@ -5,7 +5,9 @@ import NavbarHead from '../page/NavbarHead'
 import "../CSS/table.css";
 import "../CSS/decoration.css";
 import "../status/status.css";
+import "../status/search.css";
 import { storage } from '../firebase';
+
 import { SearchOutlined } from '@ant-design/icons';
 import firebase from '../firebase'
 const db = firebase.firestore();
@@ -77,9 +79,9 @@ const Status = props => {
 
             }
             setLstAlldata(templst)
-            // console.log('dd',templst);
-
-            setPhone('')
+            allData('')
+            // setPhone('')
+            
 
         }
     }
@@ -111,7 +113,8 @@ const Status = props => {
                 <Row className="setPosition" >
 
                     <Col >  <Input type="text" size={'large'} onKeyPress={onNumberOnlyChange} onChange={phonenumber} placeholder="Phone Number" style={{ width: 200 }} /></Col>
-                    <Col>   <Button type="primary" icon={<SearchOutlined />} size={'large'} onClick={onSearch} style={{ marginLeft: 20 }}> Search </Button></Col>
+                    <Col>   <Button  type="primary" icon={<SearchOutlined />} size={'large'} onClick={onSearch} style={{ marginLeft: 20 }}> Search </Button></Col>
+                    {/* <Col>   <button id="setEffectButton"  onClick={onSearch}> Search 🔍</button></Col> */}
                 </Row>
                 <Row className="setPosition" style={{marginTop: "70px" }} >
                     <Col> <table id="setTable">
