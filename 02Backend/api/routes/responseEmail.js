@@ -6,9 +6,8 @@ const qrcode = require("qrcode");
 const fs = require("fs");
 var svg2img = require('node-svg2img');
 
-
 router.post('/', async function(req, res, next) {
-  const { Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email} = req.body;
+  const { Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email, OrderNumber} = req.body;
   console.log(req.body);
   console.log(Email);
 
@@ -17,13 +16,14 @@ router.post('/', async function(req, res, next) {
     port: 587,
     secure: false,   
     auth: {
-        user: 'nongnoonprinting@gmail.com',
+        user:'nongnoonprinting@gmail.com',
         pass:'Nongnoon'
     }
 });
 
   const mobileNumber = "083-750-9438";
-  const payload = generatePayload(mobileNumber, Price); 
+  const amount = Price;
+  const payload = generatePayload(mobileNumber, { amount }); 
 
   const options = { type: "svg", color: { dark: "#000", light: "#fff" } };
   await qrcode.toString(payload, options, (err, svg) => {
@@ -40,7 +40,7 @@ router.post('/', async function(req, res, next) {
   var mailOptions = {
     from: 'nongnoonprinting@gmail.com',
     to: Email,
-    subject: 'ยืนยันการสั่งงาน',
+    subject: 'เลขรายการ ' + OrderNumber +' ยืนยันการสั่งงาน',
     text: 'สวัสดีค่ะ คุณ' + Name + ' (' + Phone +') ทางร้านได้รับรายการสั่งงานแล้วนะคะ \n' +
     'รายละเอียดงาน:\n' +
     '\tสั่งพิมพ์ ' + Type + ' ' + Color + ' ขนาด ' + Size + ' (' + Weight + 'GSM.) จำนวน ' + Quantity + ' ชุด\n' +

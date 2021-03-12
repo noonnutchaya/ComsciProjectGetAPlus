@@ -7,7 +7,7 @@ const db = firebase.firestore();
 // const orderRef = db.collection("FormatOrder");
 const orderRef = db.collection("Order");
 
-class TableOrder extends Component {
+class TableWaitPaymentOrder extends Component {
   constructor() {
     super();
     this.state = {
@@ -19,8 +19,7 @@ class TableOrder extends Component {
     var dataList = [];
     orderRef.orderBy("OrderDate", "desc").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            orderRef.doc(doc.id).update ({IdDoc: doc.id})
-            if (doc.data().WorkStatus == "รอการยืนยัน") {
+            if (doc.data().WorkStatus == "ยืนยันการทำงาน - รอการชำระ") {
                 dataList.push(doc.data());
                 this.setState({ data: dataList });
             }
@@ -39,16 +38,15 @@ class TableOrder extends Component {
         <th> จำนวน </th>
         <th> ราคา </th>
         <th> ไฟล์งาน </th>
-        <th> รับงาน </th>
-        <th> ไม่รับงาน </th>
-        
+        <th> ได้รับยอดการชำระ </th>
+        <th> ยกเลิกรายการ </th>
       </tr>
     );
   }
 
   renderTableData() {
     return this.state.data.map((order, index) => {
-      const {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Url,OrderDate,IdDoc,Email, OrderNumber} = order; //destructuring
+      const {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Url,OrderDate,IdDoc,Email, OrderNumber,WorkStatus} = order; //destructuring
       let tempDate = OrderDate.toDate().toString();
       let stringArray = tempDate.split(" ");
       return (
@@ -62,11 +60,9 @@ class TableOrder extends Component {
             <td>{Price} บาท</td>
             <td><button type="button" id="buttonFile" onClick={e => { window.open(Url, "_blank");}}> {" "} File </button></td>
             <td><button type="button" id="buttonAccept" onClick={async e => { 
-              window.location.reload(false);
-              orderRef.doc(IdDoc).update ({WorkStatus: "ยืนยันการทำงาน - รอการชำระ"});
-                console.log("Accept");
-                const payload = { Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email, OrderNumber}
-                    const res = await fetch('http://localhost:9000/mail', {
+                orderRef.doc(IdDoc).update ({WorkStatus: "กำลังดำเนินการ"});
+                const payload = {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email, OrderNumber}
+                    const res = await fetch('http://localhost:9000/getPayment', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -74,15 +70,14 @@ class TableOrder extends Component {
                         },
                         body: JSON.stringify(payload)
                     });
-                    await orderRef.doc(IdDoc).update ({WorkStatus: "ยืนยันการทำงาน - รอการชำระ"});
-               window.location.reload(false);}}> {" "} ✔	 </button>
+                await orderRef.doc(IdDoc).update ({WorkStatus: "กำลังดำเนินการ"});
+                window.location.reload(false);}}> {" "} ✔ </button>
             </td>
             <td><button type="button" id="buttonReject" onClick={async e => { 
-              window.location.reload(false);
               orderRef.doc(IdDoc).update ({WorkStatus: "ไม่รับดำเนินการ"});
-              console.log("Reject");
-              const payload = { Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email, OrderNumber}
-              const res = await fetch('http://localhost:9000/rejectMail', {
+              console.log("Expire");
+              const payload = {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Email, OrderNumber}
+                    const res = await fetch('http://localhost:9000/expirePayment', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -91,8 +86,9 @@ class TableOrder extends Component {
                         body: JSON.stringify(payload)
                     });
                     await orderRef.doc(IdDoc).update ({WorkStatus: "ไม่รับดำเนินการ"});
-              window.location.reload(false);}}> {" "} ✖ </button>
+                    window.location.reload(false);}}> {" "} ✖ </button>
             </td>
+        
         </tr>
       );
     });
@@ -113,4 +109,4 @@ class TableOrder extends Component {
   }
 }
 
-export default TableOrder;
+export default TableWaitPaymentOrder;

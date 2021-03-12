@@ -14,6 +14,9 @@ var posterRouter = require("./routes/calPoster");
 var apiRouter = require("./routes/generatePaymentQrcode");
 var mailRouter = require("./routes/responseEmail");
 var rejectMailRouter = require("./routes/rejectEmail");
+var getPaymentRouter = require("./routes/getPaymentEmail");
+var expirePaymentRouter = require("./routes/expirePaymentEmail");
+var informDoneRouter = require("./routes/informDoneEmail");
 
 var app = express();
 
@@ -38,6 +41,9 @@ app.use("/calPoster", posterRouter);
 app.use("/api", apiRouter);
 app.use("/mail", mailRouter);
 app.use("/rejectMail", rejectMailRouter);
+app.use("/getPayment", getPaymentRouter);
+app.use("/expirePayment", expirePaymentRouter);
+app.use("/informDoneEmail", informDoneRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
