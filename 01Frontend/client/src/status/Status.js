@@ -105,7 +105,7 @@ const Status = props => {
                 <NavbarHead />
                 <Row  className="setPosition">
                     <Col > 
-                        <div id="setCenterTitle" >Status</div>
+                        <div id="setCenterTitle" >STATUS</div>
                    </Col>
                 </Row>
                 <Row className="setPosition" >
