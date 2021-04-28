@@ -16,8 +16,8 @@ router.post('/', async function(req, res, next) {
     port: 587,
     secure: false,   
     auth: {
-        user:'nongnoonprinting@gmail.com',
-        pass:'Nongnoon'
+        user:'nongnoon.printingorder@gmail.com',
+        pass:';US31*Ws96>qOLso'
     }
 });
 
@@ -38,7 +38,7 @@ router.post('/', async function(req, res, next) {
   });
       
   var mailOptions = {
-    from: 'nongnoonprinting@gmail.com',
+    from: 'nongnoon.printingorder@gmail.com',
     to: Email,
     subject: 'เลขรายการ ' + OrderNumber +' ยืนยันการสั่งงาน',
     text: 'สวัสดีค่ะ คุณ' + Name + ' (' + Phone +') ทางร้านได้รับรายการสั่งงานแล้วนะคะ \n' +

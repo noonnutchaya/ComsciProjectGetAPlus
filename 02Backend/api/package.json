@@ -23,6 +23,7 @@
     "pdf-image": "^2.0.0",
     "pdf-img-convert": "^1.0.3",
     "pdf-poppler": "^0.2.1",
+    "prompt-sync": "^4.2.0",
     "promptpay-qr": "^0.4.4",
     "qrcode": "^1.4.4",
     "sharp": "^0.27.2"

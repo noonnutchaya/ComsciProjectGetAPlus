@@ -28,7 +28,7 @@ router.post("/", async function(req, res, next) {
 
   if (realPrice % 2 != 0) {
     console.log("With Dot: " + realPrice);
-    realPrice = Math.trunc(realPrice) + 1;
+    // realPrice = Math.trunc(realPrice) + 1;
   }
 
   console.log("totalPrice: " + realPrice);

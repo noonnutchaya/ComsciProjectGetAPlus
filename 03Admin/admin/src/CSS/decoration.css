@@ -1,3 +1,6 @@
+
+@import url("https://fonts.googleapis.com/css?family=Sarabun");
+
 #LogoNavbar {
   width: 25%;
   height: 35%;
@@ -11,7 +14,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 4%;
+  height: 1.5%;
   background-color: #fcfcbc;
   color: #fcfcbc;
   text-align: left;
@@ -79,4 +82,76 @@
 
 #buttonReject:hover {
   background-color:  #C0392B  ;
+}
+
+#buttonReject2 {
+  height: 50px;
+  width: 50px;
+  background-color: #ec7063;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#homePage {
+  margin-top: 40px;
+  background-color: #fcfcbc;
+  display: inline-block;
+  width: 1500px;
+  height: 700px;
+
+}
+
+#homePage2 {
+  margin-top: 40px;
+  background-color: #fcfcbc;
+  display: inline-block;
+  width: 750px;
+  height: 700px;
+}
+
+#homeText{
+  text-align: center;
+  margin-top: 30%;
+  margin-bottom: 6.5%;
+  font-size: 380%;
+  font-weight: 850;
+  letter-spacing: 10px;
+  color: #292929;
+}
+
+#homeText2{
+  text-align: center;
+  margin-bottom: 6.5%;
+  font-size: 120%;
+  font-weight: 300;
+  letter-spacing: 10px;
+  color: #292929;
+}
+
+#setEffectButton {
+  background-color: #58d68d;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 120%;
+  font-weight: 500;
+  letter-spacing: 10px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+}
+
+#setEffectButton:hover {
+  background-color: #27AE60;
 }

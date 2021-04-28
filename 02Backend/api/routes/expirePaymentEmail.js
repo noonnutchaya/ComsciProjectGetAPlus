@@ -13,13 +13,13 @@ router.post('/', function(req, res, next) {
         port: 587,
         secure: false,   
         auth: {
-            user: 'nongnoonprinting@gmail.com',
-            pass:'Nongnoon'
+          user:'nongnoon.printingorder@gmail.com',
+          pass:';US31*Ws96>qOLso'
         }
     });
       
       var mailOptions = {
-        from: 'nongnoonprinting@gmail.com',
+        from: 'nongnoon.printingorder@gmail.com',
         to: Email,
         subject: 'เลขรายการ ' + OrderNumber +' ยกเลิกรายการ',
         text: 'สวัสดีค่ะ คุณ' + Name + ' (' + Phone +') ทางร้านขออนุญาตยกเลิกรายการนะคะ\nเนื่องจากเกินระยะเวลาในการชำระ' +

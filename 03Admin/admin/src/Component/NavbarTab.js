@@ -19,7 +19,7 @@ const NavbarTab = props => {
         </Navbar.Brand>
         <Nav className="mr-auto"></Nav>
         <Nav className="justify-content-end">
-          {/* <Nav.Link href="/">Home</Nav.Link> */}
+          <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/Order">Order</Nav.Link>
           <Nav.Link href="/Payment">Awaiting Payment</Nav.Link>
           <Nav.Link href="/Doing">Doing</Nav.Link>

@@ -9,6 +9,8 @@ import { storage } from '../firebase';
 import { SearchOutlined } from '@ant-design/icons';
 import firebase from '../firebase'
 const db = firebase.firestore();
+const orderRef = db.collection("Order");
+
 const onNumberOnlyChange = (event) => {
     const keyCode = event.keyCode || event.which;
     const keyValue = String.fromCharCode(keyCode);
@@ -32,7 +34,7 @@ const Status = props => {
     }, [])
     async function allData() {
         let wholedata = []
-        await db.collection("Order").get().then((querySnapshot) => {
+        await orderRef.orderBy("OrderDate", "desc").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 var temp = [];
                 temp.push(doc.id)
@@ -105,7 +107,7 @@ const Status = props => {
                 <NavbarHead />
                 <Row  className="setPosition">
                     <Col > 
-                        <div id="setCenterTitle" >Status</div>
+                        <div id="setCenterTitle" >STATUS</div>
                    </Col>
                 </Row>
                 <Row className="setPosition" >
@@ -113,23 +115,25 @@ const Status = props => {
                     <Col >  <Input type="text" size={'large'} onKeyPress={onNumberOnlyChange} onChange={phonenumber} placeholder="Phone Number" style={{ width: 200 }} /></Col>
                     <Col>   <Button type="primary" icon={<SearchOutlined />} size={'large'} onClick={onSearch} style={{ marginLeft: 20 }}> Search </Button></Col>
                 </Row>
-                <Row className="setPosition" style={{marginTop: "70px" }} >
+                <Row className="setPosition" style={{marginTop: "60px" }} >
                     <Col> <table id="setTable">
                         <tbody>
                             {lstAlldata.length !== 0 && renderTableHeader()}
                             {lstAlldata.map((order, index) => {
-                                const { Name, Type, Phone, Description, Size, Weight, Color, Price, Quantity, Url, OrderDate, IdDoc, Email, OrderNumber, WorkStatus } = order[1]; //destructuring
-                                // console.log('order', order)
+                                const { Name, Type, Phone, Description, Size, Weight, Color, Price, Quantity, Url, OrderDate, ColorPaper, Email, OrderNumber, WorkStatus } = order[1]; //destructuring
                                 let tempDate = OrderDate.toDate().toString();
                                 let stringArray = tempDate.split(" ");
+                                let c = 'ขาว-ดำ'
+                                if (Color == 'color') {
+                                    c = 'สี'
+                                }
                                 return (
                                     <tr key={Name}>
                                         <td>{stringArray[2]}-{stringArray[1]}-{stringArray[3]}</td>
                                         <td>{OrderNumber}</td>
                                         <td>{Name}</td>
                                         <td>{Email}</td>
-
-                                        <td>สั่งพิมพ์ {Type} {Color} ขนาด {Size} ({Weight} แกรม) <br /> {Description}</td>
+                                        <td>สั่งพิมพ์ {Type} {c} ขนาด {Size} ( {ColorPaper} {Weight} GSM. ) <br /> {Description}</td>
                                         <td>{Quantity} ชุด</td>
                                         <td>{Price} บาท</td>
                                         <td>{WorkStatus}</td>

@@ -25,7 +25,7 @@ const onNumberOnlyChange = (event) => {
 const Envelope = props => {
     // const [count, setCount] = useState(0)
     const [size, setSize] = useState('DL')
-    const [weight, setWeight] = useState(0) // paper
+    const [weight, setWeight] = useState('-') // paper
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('color')
     const [url, setUrl] = useState(null)

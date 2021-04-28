@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
+import ShowHomePage from './ShowHomePage';
 import ShowOrderPage from './ShowOrderPage';
 import ShowRejectPage from './ShowRejectPage';
 import ShowPaymentPage from './ShowPaymentPage';
@@ -9,12 +10,9 @@ import ShowFinishPage from './ShowFinishPage';
 
 function App() {
   return (
-    // <div >
-    //   <ShowOrderPage/>
-    // </div>
     <Router>
     <Switch>
-      <Route exact path='/' component={ShowOrderPage} />
+      <Route exact path='/' component={ShowHomePage} />
       <Route path='/Order' component={ShowOrderPage}/>
       <Route path='/Payment' component={ShowPaymentPage}/>
       <Route path='/Doing' component={ShowDoingPage}/>

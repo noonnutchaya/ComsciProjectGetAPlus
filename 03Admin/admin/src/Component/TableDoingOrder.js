@@ -45,16 +45,20 @@ class TableDoingOrder extends Component {
 
   renderTableData() {
     return this.state.data.map((order, index) => {
-      const {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Url,OrderDate,IdDoc,Email, OrderNumber} = order; //destructuring
+      const {Name,Type,Phone,Description,Size,Weight,Color,Price,Quantity,Url,OrderDate,IdDoc,Email, OrderNumber, ColorPaper} = order; //destructuring
       let tempDate = OrderDate.toDate().toString();
       let stringArray = tempDate.split(" ");
+      let c = 'ขาว-ดำ'
+      if (Color == 'color') {
+        c = 'สี'
+      }
       return (
         <tr key={Name}>
             <td>{stringArray[2]}-{stringArray[1]}-{stringArray[3]}</td>
             <td>{OrderNumber}</td>
             <td>{Name}</td>
             <td>{Phone}</td>
-            <td>สั่งพิมพ์ {Type} {Color} ขนาด {Size} ({Weight} แกรม) <br/> {Description}</td>
+            <td>สั่งพิมพ์ {Type} {c} ขนาด {Size} ( {ColorPaper} {Weight} GSM. )  <br/> {Description}</td>
             <td>{Quantity} ชุด</td>
             <td>{Price} บาท</td>
             <td><button type="button" id="buttonFile" onClick={e => { window.open(Url, "_blank");}}> {" "} File </button></td>

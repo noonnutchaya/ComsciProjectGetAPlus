@@ -210,7 +210,7 @@ const Flayer = props => {
                         <Col><div id = "setTextTopic">Size: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
                             <Select size={'large'} style={{ width: 300 }} onChange={handleChangeSize} placeholder="SIZE - A4">
-                                <Option value="a4">A4</Option>
+                                <Option value="A4">A4</Option>
                             </Select></Col>
                         <Col><div id = "setTextTopic"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paper weight: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> </Col>
                         <Col>
