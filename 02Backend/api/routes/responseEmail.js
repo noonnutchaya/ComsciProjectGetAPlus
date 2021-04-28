@@ -16,8 +16,8 @@ router.post('/', async function(req, res, next) {
     port: 587,
     secure: false,   
     auth: {
-        user:'nongnoon.printingorder@gmail.com',
-        pass:';US31*Ws96>qOLso'
+        user:'*********@gmail.com',
+          pass:'*********'
     }
 });
 
